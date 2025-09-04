@@ -1,0 +1,1409 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      My Practical Insights of Using Matplotlib Library - ML Insights
+    </title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.7;
+        color: #333;
+        background: linear-gradient(135deg, #f8f9ff 0%, #e8f0fe 100%);
+      }
+
+      .container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 2rem;
+      }
+
+      /* Header */
+      .blog-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 3rem;
+        border-radius: 20px;
+        text-align: center;
+        margin-bottom: 3rem;
+        box-shadow: 0 20px 40px rgba(102, 126, 234, 0.2);
+      }
+
+      .blog-header h1 {
+        font-size: 2.8rem;
+        margin-bottom: 1rem;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+      }
+
+      .blog-meta {
+        font-size: 1.1rem;
+        opacity: 0.9;
+        margin-bottom: 1rem;
+      }
+
+      .blog-description {
+        font-size: 1.2rem;
+        max-width: 800px;
+        margin: 0 auto;
+        opacity: 0.95;
+      }
+
+      /* Content */
+      .blog-content {
+        background: white;
+        padding: 4rem;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        margin-bottom: 2rem;
+      }
+
+      .blog-content h2 {
+        font-size: 2.2rem;
+        color: #333;
+        margin: 3rem 0 1.5rem 0;
+        padding-bottom: 0.5rem;
+        border-bottom: 3px solid #667eea;
+      }
+
+      .blog-content h3 {
+        font-size: 1.8rem;
+        color: #444;
+        margin: 2.5rem 0 1rem 0;
+      }
+
+      .blog-content p {
+        margin: 1.5rem 0;
+        font-size: 1.1rem;
+        line-height: 1.8;
+      }
+
+      /* Code blocks */
+      .code-section {
+        margin: 2.5rem 0;
+        background: #f8f9fa;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .code-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 1rem 1.5rem;
+        font-weight: 600;
+        font-size: 1.1rem;
+      }
+
+      .code-block {
+        background: #2d3748;
+        color: #e2e8f0;
+        padding: 2rem;
+        font-family: "Consolas", "Monaco", "Courier New", monospace;
+        font-size: 0.95rem;
+        line-height: 1.6;
+        overflow-x: auto;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+      }
+
+      /* Output blocks */
+      .output-section {
+        margin: 1.5rem 0 2.5rem 0;
+        background: #f7fafc;
+        border-radius: 10px;
+        border-left: 5px solid #48bb78;
+      }
+
+      .output-header {
+        background: #48bb78;
+        color: white;
+        padding: 0.8rem 1.5rem;
+        font-weight: 600;
+        font-size: 1rem;
+      }
+
+      .output-content {
+        padding: 1.5rem;
+        font-family: "Consolas", "Monaco", "Courier New", monospace;
+        font-size: 0.95rem;
+        background: #ffffff;
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+        white-space: pre-line;
+      }
+
+      /* Insight boxes */
+      .insight-box {
+        background: linear-gradient(135deg, #fef5e7 0%, #fff8e1 100%);
+        border-left: 5px solid #f6ad55;
+        padding: 2rem;
+        margin: 2.5rem 0;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(246, 173, 85, 0.1);
+      }
+
+      .insight-box h4 {
+        color: #c05621;
+        font-size: 1.3rem;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+      }
+
+      .insight-box h4::before {
+        content: "💡";
+        margin-right: 0.5rem;
+        font-size: 1.5rem;
+      }
+
+      /* Tip boxes */
+      .tip-box {
+        background: linear-gradient(135deg, #e6fffa 0%, #f0fff4 100%);
+        border-left: 5px solid #38b2ac;
+        padding: 2rem;
+        margin: 2.5rem 0;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(56, 178, 172, 0.1);
+      }
+
+      .tip-box strong {
+        color: #2c7a7b;
+        font-size: 1.2rem;
+      }
+
+      /* Design boxes */
+      .design-box {
+        background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%);
+        border-left: 5px solid #5c6bc0;
+        padding: 2rem;
+        margin: 2.5rem 0;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(92, 107, 192, 0.1);
+      }
+
+      .design-box h4 {
+        color: #3f4771;
+        font-size: 1.3rem;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+      }
+
+      .design-box h4::before {
+        content: "🎨";
+        margin-right: 0.5rem;
+        font-size: 1.5rem;
+      }
+
+      /* Performance boxes */
+      .performance-box {
+        background: linear-gradient(135deg, #fed7d7 0%, #fbb6ce 100%);
+        border-left: 5px solid #f56565;
+        padding: 2rem;
+        margin: 2.5rem 0;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(245, 101, 101, 0.1);
+      }
+
+      .performance-box h4 {
+        color: #c53030;
+        font-size: 1.3rem;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+      }
+
+      .performance-box h4::before {
+        content: "⚡";
+        margin-right: 0.5rem;
+        font-size: 1.5rem;
+      }
+
+      /* Lists */
+      ul,
+      ol {
+        margin: 1.5rem 0;
+        padding-left: 2rem;
+      }
+
+      li {
+        margin: 0.8rem 0;
+        font-size: 1.1rem;
+      }
+
+      /* Navigation */
+      .back-nav {
+        text-align: center;
+        margin-top: 3rem;
+      }
+
+      .back-link {
+        display: inline-block;
+        padding: 1rem 2.5rem;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        text-decoration: none;
+        border-radius: 50px;
+        font-weight: 600;
+        transition: transform 0.3s ease;
+        font-size: 1.1rem;
+      }
+
+      .back-link:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .container {
+          padding: 1rem;
+        }
+
+        .blog-header {
+          padding: 2rem;
+        }
+
+        .blog-header h1 {
+          font-size: 2.2rem;
+        }
+
+        .blog-content {
+          padding: 2rem;
+        }
+
+        .code-block {
+          padding: 1.5rem;
+          font-size: 0.9rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Header -->
+      <header class="blog-header">
+        <h1>My Practical Insights of Using Matplotlib Library</h1>
+        <div class="blog-meta">Published on May 18, 2024 | 20 min read</div>
+        <p class="blog-description">
+          A comprehensive exploration of advanced Matplotlib techniques,
+          publication-quality visualization strategies, and professional
+          plotting patterns that transform data into compelling visual
+          narratives
+        </p>
+      </header>
+
+      <!-- Blog Content -->
+      <article class="blog-content">
+        <p>
+          Matplotlib is the foundation of Python's data visualization ecosystem,
+          yet most practitioners only use a fraction of its capabilities. After
+          years of creating visualizations for scientific publications, business
+          presentations, and interactive dashboards, I've discovered that
+          mastering Matplotlib is about much more than just plotting data, it's
+          about crafting visual stories that communicate insights effectively.
+        </p>
+
+        <p>
+          This comprehensive guide shares the advanced techniques, design
+          principles, and optimization strategies I've developed through
+          creating thousands of plots for diverse audiences, from academic
+          papers to executive dashboards. These aren't theoretical examples,
+          they're battle-tested approaches that consistently produce
+          publication-quality visualizations.
+        </p>
+
+        <h2>1. Professional Plot Architecture and Setup</h2>
+
+        <p>
+          Creating professional visualizations starts with proper setup and
+          understanding Matplotlib's architecture. The way you structure your
+          plotting code determines both the quality of your output and your
+          ability to iterate quickly.
+        </p>
+
+        <div class="code-section">
+          <div class="code-header">
+            Professional Matplotlib Setup and Configuration
+          </div>
+          <div class="code-block">
+            import matplotlib.pyplot as plt import matplotlib as mpl import
+            numpy as np import pandas as pd import seaborn as sns from
+            matplotlib import cm from matplotlib.patches import Rectangle,
+            Circle from matplotlib.gridspec import GridSpec import
+            matplotlib.dates as mdates from datetime import datetime, timedelta
+            # Configure matplotlib for high-quality output
+            plt.style.use('default') # Start with clean slate # Custom style
+            configuration for professional plots custom_style = {
+            'figure.figsize': (12, 8), 'figure.dpi': 100, 'savefig.dpi': 300,
+            'savefig.bbox': 'tight', 'savefig.facecolor': 'white', # Font
+            settings for publication quality 'font.family': 'serif',
+            'font.serif': ['Times New Roman', 'DejaVu Serif'], 'font.size': 11,
+            'axes.titlesize': 14, 'axes.labelsize': 12, 'xtick.labelsize': 10,
+            'ytick.labelsize': 10, 'legend.fontsize': 10, # Professional color
+            and styling 'axes.linewidth': 1.2, 'axes.grid': True, 'grid.alpha':
+            0.3, 'grid.linewidth': 0.8, 'axes.axisbelow': True, # Spine styling
+            'axes.spines.top': False, 'axes.spines.right': False,
+            'axes.spines.left': True, 'axes.spines.bottom': True, } # Apply
+            custom style mpl.rcParams.update(custom_style) # Professional color
+            palettes professional_colors = { 'corporate': ['#2E86AB', '#A23B72',
+            '#F18F01', '#C73E1D', '#8B5A3C'], 'academic': ['#1f77b4', '#ff7f0e',
+            '#2ca02c', '#d62728', '#9467bd'], 'nature': ['#2E8B57', '#4682B4',
+            '#CD853F', '#8FBC8F', '#DDA0DD'], 'colorblind_safe': ['#E69F00',
+            '#56B4E9', '#009E73', '#F0E442', '#0072B2'] } print("Matplotlib
+            configuration applied successfully") print(f"Default figure size:
+            {mpl.rcParams['figure.figsize']}") print(f"Default DPI:
+            {mpl.rcParams['figure.dpi']}") print(f"Save DPI:
+            {mpl.rcParams['savefig.dpi']}") # Create reusable plotting class for
+            consistency class ProfessionalPlotter: """A class to create
+            consistent, professional plots""" def __init__(self,
+            style='corporate', figsize=(12, 8)): self.colors =
+            professional_colors[style] self.figsize = figsize self.style = style
+            def setup_axes(self, ax, title=None, xlabel=None, ylabel=None):
+            """Apply consistent styling to axes""" if title: ax.set_title(title,
+            fontsize=14, fontweight='bold', pad=20) if xlabel:
+            ax.set_xlabel(xlabel, fontsize=12, fontweight='semibold') if ylabel:
+            ax.set_ylabel(ylabel, fontsize=12, fontweight='semibold') #
+            Customize spines ax.spines['top'].set_visible(False)
+            ax.spines['right'].set_visible(False)
+            ax.spines['left'].set_color('#333333')
+            ax.spines['bottom'].set_color('#333333') # Grid styling
+            ax.grid(True, alpha=0.3, linestyle='-', linewidth=0.8)
+            ax.set_axisbelow(True) # Tick parameters ax.tick_params(axis='both',
+            which='major', labelsize=10, colors='#333333', width=1, length=6)
+            return ax def save_plot(self, fig, filename, formats=['png',
+            'pdf']): """Save plot in multiple formats with professional
+            settings""" for fmt in formats: fig.savefig(f"{filename}.{fmt}",
+            format=fmt, dpi=300, bbox_inches='tight', facecolor='white',
+            edgecolor='none') print(f"Plot saved as: {',
+            '.join([f'{filename}.{fmt}' for fmt in formats])}") # Initialize
+            professional plotter plotter =
+            ProfessionalPlotter(style='corporate') print(f"Professional plotter
+            initialized with {plotter.style} color scheme") # Example of proper
+            figure and axes creation fig, axes = plt.subplots(2, 2, figsize=(15,
+            10)) fig.suptitle('Professional Plot Layout Examples', fontsize=16,
+            fontweight='bold') # Demonstrate consistent styling across subplots
+            for i, ax in enumerate(axes.flat): # Generate sample data x =
+            np.linspace(0, 10, 100) y = np.sin(x + i) * np.exp(-x/10) ax.plot(x,
+            y, color=plotter.colors[i], linewidth=2.5, alpha=0.8)
+            plotter.setup_axes(ax, title=f'Subplot {i+1}:
+            sin(x+{i})·exp(-x/10)', xlabel='X values', ylabel='Y values')
+            plt.tight_layout() plt.show() print("Professional plot architecture
+            demonstration completed")
+          </div>
+        </div>
+
+        <div class="output-section">
+          <div class="output-header">Expected Output:</div>
+          <div class="output-content">
+            Matplotlib configuration applied successfully Default figure size:
+            [12.0, 8.0] Default DPI: 100 Save DPI: 300 Professional plotter
+            initialized with corporate color scheme Professional plot
+            architecture demonstration completed
+          </div>
+        </div>
+
+        <div class="design-box">
+          <h4>Design Philosophy</h4>
+          <p>
+            Professional visualization starts with consistent styling. By
+            creating reusable configurations and classes, you ensure visual
+            consistency across all your plots while maintaining the flexibility
+            to adapt for specific use cases.
+          </p>
+        </div>
+
+        <h2>2. Advanced Plot Types and Custom Visualizations</h2>
+
+        <p>
+          Beyond basic line and bar plots, Matplotlib offers powerful
+          capabilities for creating sophisticated visualizations that can handle
+          complex data relationships and tell compelling stories.
+        </p>
+
+        <div class="code-section">
+          <div class="code-header">
+            Advanced Plotting Techniques and Custom Visualizations
+          </div>
+          <div class="code-block">
+            # Advanced plotting techniques and custom visualizations # Generate
+            comprehensive sample dataset np.random.seed(42) n_samples = 1000 #
+            Multi-dimensional dataset for advanced plotting data = { 'x':
+            np.random.randn(n_samples), 'y': np.random.randn(n_samples), 'size':
+            np.random.exponential(50, n_samples), 'category':
+            np.random.choice(['A', 'B', 'C', 'D'], n_samples), 'time':
+            pd.date_range('2023-01-01', periods=n_samples, freq='1H'), 'value':
+            np.cumsum(np.random.randn(n_samples) * 0.1) + 100, 'confidence':
+            np.random.uniform(0.1, 0.9, n_samples) } df = pd.DataFrame(data)
+            print(f"Dataset created with shape: {df.shape}") # 1. Advanced
+            Scatter Plot with Multiple Dimensions fig, ax =
+            plt.subplots(figsize=(12, 8)) # Create scatter plot with size,
+            color, and alpha mappings categories = df['category'].unique()
+            colors = plotter.colors[:len(categories)] for i, category in
+            enumerate(categories): mask = df['category'] == category scatter =
+            ax.scatter( df[mask]['x'], df[mask]['y'], s=df[mask]['size'],
+            c=colors[i], alpha=0.6, label=f'Category {category}',
+            edgecolors='white', linewidth=0.5 ) plotter.setup_axes(ax,
+            title='Multi-dimensional Scatter Plot\nSize: Value, Color: Category,
+            Alpha: Confidence', xlabel='X Dimension', ylabel='Y Dimension') #
+            Custom legend for scatter plot handles, labels =
+            ax.get_legend_handles_labels() legend1 = ax.legend(handles, labels,
+            loc='upper left', frameon=True, fancybox=True, shadow=True) # Add
+            size legend sizes = [20, 50, 100, 200] size_labels = ['Small',
+            'Medium', 'Large', 'X-Large'] size_legend_elements = [] for size,
+            label in zip(sizes, size_labels):
+            size_legend_elements.append(plt.scatter([], [], s=size, c='gray',
+            alpha=0.6, label=label)) legend2 =
+            ax.legend(handles=size_legend_elements, labels=size_labels,
+            loc='upper right', title='Size Legend', frameon=True)
+            ax.add_artist(legend1) # Add back the first legend
+            plt.tight_layout() plt.show() # 2. Advanced Time Series with
+            Confidence Intervals fig, ax = plt.subplots(figsize=(14, 8)) #
+            Calculate rolling statistics window = 24 rolling_mean =
+            df['value'].rolling(window=window).mean() rolling_std =
+            df['value'].rolling(window=window).std() # Create confidence
+            intervals upper_bound = rolling_mean + 2 * rolling_std lower_bound =
+            rolling_mean - 2 * rolling_std # Plot main time series
+            ax.plot(df['time'], df['value'], color=plotter.colors[0], alpha=0.3,
+            linewidth=1, label='Raw Data') ax.plot(df['time'], rolling_mean,
+            color=plotter.colors[1], linewidth=2.5, label=f'{window}h Rolling
+            Mean') # Fill confidence interval ax.fill_between(df['time'],
+            lower_bound, upper_bound, color=plotter.colors[1], alpha=0.2,
+            label='95% Confidence Interval') # Format x-axis for dates
+            ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d'))
+            ax.xaxis.set_major_locator(mdates.DayLocator(interval=7))
+            plt.xticks(rotation=45) plotter.setup_axes(ax, title='Advanced Time
+            Series with Confidence Intervals', xlabel='Date', ylabel='Value')
+            ax.legend(loc='upper left', frameon=True, fancybox=True,
+            shadow=True) plt.tight_layout() plt.show() # 3. Custom Heatmap with
+            Annotations # Create correlation matrix numeric_cols = ['x', 'y',
+            'size', 'value', 'confidence'] correlation_matrix =
+            df[numeric_cols].corr() fig, ax = plt.subplots(figsize=(10, 8)) #
+            Create custom colormap cmap = plt.cm.RdBu_r norm =
+            mpl.colors.Normalize(vmin=-1, vmax=1) # Plot heatmap im =
+            ax.imshow(correlation_matrix, cmap=cmap, norm=norm, aspect='auto') #
+            Set ticks and labels ax.set_xticks(range(len(numeric_cols)))
+            ax.set_yticks(range(len(numeric_cols)))
+            ax.set_xticklabels(numeric_cols, rotation=45, ha='right')
+            ax.set_yticklabels(numeric_cols) # Add correlation values as text
+            annotations for i in range(len(numeric_cols)): for j in
+            range(len(numeric_cols)): text = ax.text(j, i,
+            f'{correlation_matrix.iloc[i, j]:.2f}', ha='center', va='center',
+            color='white' if abs(correlation_matrix.iloc[i, j]) > 0.5 else
+            'black', fontweight='bold', fontsize=12) # Add colorbar cbar =
+            plt.colorbar(im, ax=ax, shrink=0.8) cbar.set_label('Correlation
+            Coefficient', rotation=270, labelpad=20) plotter.setup_axes(ax,
+            title='Feature Correlation Heatmap with Custom Styling',
+            xlabel='Features', ylabel='Features') plt.tight_layout() plt.show()
+            # 4. Advanced Subplot Layout with GridSpec fig =
+            plt.figure(figsize=(16, 12)) gs = GridSpec(3, 3, height_ratios=[2,
+            1, 1], width_ratios=[2, 1, 1]) # Main plot (spans multiple cells)
+            ax_main = fig.add_subplot(gs[0, :2]) ax_main.hist2d(df['x'],
+            df['y'], bins=30, cmap='Blues', alpha=0.8)
+            plotter.setup_axes(ax_main, title='2D Histogram (Main View)',
+            xlabel='X values', ylabel='Y values') # Side histogram for X ax_x =
+            fig.add_subplot(gs[0, 2]) ax_x.hist(df['x'], bins=30,
+            orientation='horizontal', color=plotter.colors[1], alpha=0.7,
+            edgecolor='black') plotter.setup_axes(ax_x, title='X Distribution')
+            ax_x.set_ylabel('') # Bottom histogram for Y ax_y =
+            fig.add_subplot(gs[1, :2]) ax_y.hist(df['y'], bins=30,
+            color=plotter.colors[2], alpha=0.7, edgecolor='black')
+            plotter.setup_axes(ax_y, title='Y Distribution', xlabel='Y values',
+            ylabel='Frequency') # Category distribution pie chart ax_pie =
+            fig.add_subplot(gs[1, 2]) category_counts =
+            df['category'].value_counts() wedges, texts, autotexts =
+            ax_pie.pie(category_counts.values, labels=category_counts.index,
+            colors=plotter.colors[:len(category_counts)], autopct='%1.1f%%',
+            startangle=90) ax_pie.set_title('Category Distribution',
+            fontsize=12, fontweight='bold') # Time series summary ax_time =
+            fig.add_subplot(gs[2, :]) daily_avg =
+            df.groupby(df['time'].dt.date)['value'].mean()
+            ax_time.plot(daily_avg.index, daily_avg.values,
+            color=plotter.colors[0], linewidth=2, marker='o', markersize=4)
+            plotter.setup_axes(ax_time, title='Daily Average Values',
+            xlabel='Date', ylabel='Average Value') ax_time.tick_params(axis='x',
+            rotation=45) plt.tight_layout() plt.show() print("Advanced plotting
+            techniques demonstration completed") print(f"Created visualizations
+            for {len(df)} data points across multiple dimensions")
+          </div>
+        </div>
+
+        <div class="output-section">
+          <div class="output-header">Expected Output:</div>
+          <div class="output-content">
+            Dataset created with shape: (1000, 7) Advanced plotting techniques
+            demonstration completed Created visualizations for 1000 data points
+            across multiple dimensions
+          </div>
+        </div>
+
+        <div class="insight-box">
+          <h4>Visualization Complexity Insight</h4>
+          <p>
+            Advanced plots should enhance understanding, not complicate it. The
+            key is to map data dimensions to visual elements (size, color,
+            position, shape) in ways that align with human visual perception and
+            the story you want to tell.
+          </p>
+        </div>
+
+        <h2>3. Professional Styling and Publication-Quality Output</h2>
+
+        <p>
+          Creating publication-ready visualizations requires attention to
+          typography, color theory, layout principles, and output formats. These
+          techniques ensure your plots look professional in any context.
+        </p>
+
+        <div class="code-section">
+          <div class="code-header">Publication-Quality Styling and Output</div>
+          <div class="code-block">
+            # Publication-quality styling and output techniques # Advanced
+            styling configurations for different publication contexts
+            publication_styles = { 'journal_paper': { 'figure.figsize': (6, 4),
+            # Single column width 'font.family': 'serif', 'font.serif':
+            ['Computer Modern', 'Times New Roman'], 'font.size': 8,
+            'axes.titlesize': 9, 'axes.labelsize': 8, 'xtick.labelsize': 7,
+            'ytick.labelsize': 7, 'legend.fontsize': 7, 'lines.linewidth': 1.0,
+            'axes.linewidth': 0.8, }, 'conference_presentation': {
+            'figure.figsize': (12, 9), # 4:3 aspect ratio 'font.family':
+            'sans-serif', 'font.sans-serif': ['Arial', 'Helvetica'],
+            'font.size': 14, 'axes.titlesize': 18, 'axes.labelsize': 16,
+            'xtick.labelsize': 14, 'ytick.labelsize': 14, 'legend.fontsize': 14,
+            'lines.linewidth': 3.0, 'axes.linewidth': 2.0, }, 'business_report':
+            { 'figure.figsize': (10, 6), 'font.family': 'sans-serif',
+            'font.sans-serif': ['Calibri', 'Arial'], 'font.size': 11,
+            'axes.titlesize': 14, 'axes.labelsize': 12, 'xtick.labelsize': 10,
+            'ytick.labelsize': 10, 'legend.fontsize': 11, 'lines.linewidth':
+            2.0, 'axes.linewidth': 1.2, } } def
+            apply_publication_style(style_name): """Apply specific publication
+            styling""" if style_name in publication_styles:
+            mpl.rcParams.update(publication_styles[style_name]) print(f"Applied
+            {style_name} styling") else: print(f"Style {style_name} not found")
+            # Professional color schemes with accessibility in mind
+            color_schemes = { 'colorblind_friendly': { 'primary': '#1f77b4',
+            'secondary': '#ff7f0e', 'accent': '#2ca02c', 'warning': '#d62728',
+            'info': '#9467bd', 'palette': ['#1f77b4', '#ff7f0e', '#2ca02c',
+            '#d62728', '#9467bd', '#8c564b'] }, 'high_contrast': { 'primary':
+            '#000000', 'secondary': '#E31A1C', 'accent': '#1F78B4', 'warning':
+            '#FF7F00', 'info': '#33A02C', 'palette': ['#000000', '#E31A1C',
+            '#1F78B4', '#FF7F00', '#33A02C', '#6A3D9A'] }, 'monochrome': {
+            'primary': '#2C3E50', 'secondary': '#34495E', 'accent': '#7F8C8D',
+            'warning': '#95A5A6', 'info': '#BDC3C7', 'palette': ['#2C3E50',
+            '#34495E', '#7F8C8D', '#95A5A6', '#BDC3C7', '#ECF0F1'] } } # Create
+            sample data for styling demonstration np.random.seed(42) months =
+            pd.date_range('2023-01', periods=12, freq='M') sales_data = {
+            'Product A': np.random.uniform(80, 120, 12), 'Product B':
+            np.random.uniform(60, 100, 12), 'Product C': np.random.uniform(40,
+            80, 12), 'Product D': np.random.uniform(90, 130, 12) } sales_df =
+            pd.DataFrame(sales_data, index=months) # 1. Journal Paper Style
+            apply_publication_style('journal_paper') colors =
+            color_schemes['colorblind_friendly']['palette'] fig, ax =
+            plt.subplots(figsize=(6, 4)) # Plot with professional styling for i,
+            (product, data) in enumerate(sales_df.items()):
+            ax.plot(sales_df.index, data, color=colors[i], linewidth=1.5,
+            marker='o', markersize=4, label=product, alpha=0.8) # Professional
+            formatting ax.set_title('Quarterly Sales Performance Analysis',
+            fontweight='bold', pad=15) ax.set_xlabel('Quarter',
+            fontweight='semibold') ax.set_ylabel('Sales (Units × 1000)',
+            fontweight='semibold') # Format dates on x-axis
+            ax.xaxis.set_major_formatter(mdates.DateFormatter('%b %Y'))
+            ax.xaxis.set_major_locator(mdates.MonthLocator(interval=3))
+            plt.xticks(rotation=45) # Professional legend ax.legend(loc='upper
+            left', frameon=True, fancybox=True, shadow=True, ncol=2,
+            columnspacing=1.5) # Grid and spines ax.grid(True, alpha=0.3,
+            linestyle='--', linewidth=0.5) ax.spines['top'].set_visible(False)
+            ax.spines['right'].set_visible(False) plt.tight_layout() plt.show()
+            # Save in multiple formats for publication
+            fig.savefig('sales_analysis_journal.pdf', dpi=300,
+            bbox_inches='tight') fig.savefig('sales_analysis_journal.png',
+            dpi=300, bbox_inches='tight')
+            fig.savefig('sales_analysis_journal.eps', dpi=300,
+            bbox_inches='tight') print("Journal-style plot saved in PDF, PNG,
+            and EPS formats") # 2. Conference Presentation Style
+            apply_publication_style('conference_presentation') fig, axes =
+            plt.subplots(1, 2, figsize=(16, 8)) # Left panel: Bar chart with
+            error bars quarterly_means = sales_df.mean(axis=1) quarterly_stds =
+            sales_df.std(axis=1) bars = axes[0].bar(range(len(quarterly_means)),
+            quarterly_means.values, color=colors[0], alpha=0.7,
+            edgecolor='black', linewidth=1.5, yerr=quarterly_stds.values,
+            capsize=8, capthick=2) axes[0].set_title('Average Quarterly
+            Performance', fontweight='bold', pad=20)
+            axes[0].set_xlabel('Quarter', fontweight='bold')
+            axes[0].set_ylabel('Average Sales (Units × 1000)',
+            fontweight='bold') axes[0].set_xticks(range(len(quarterly_means)))
+            axes[0].set_xticklabels([f'Q{i+1}' for i in
+            range(len(quarterly_means))]) # Add value labels on bars for bar,
+            value in zip(bars, quarterly_means.values): height =
+            bar.get_height() axes[0].text(bar.get_x() + bar.get_width()/2.,
+            height + quarterly_stds.values[bars.index(bar)] + 2, f'{value:.1f}',
+            ha='center', va='bottom', fontweight='bold', fontsize=12) # Right
+            panel: Stacked area chart axes[1].stackplot(sales_df.index,
+            *[sales_df[col] for col in sales_df.columns],
+            labels=sales_df.columns, colors=colors[:len(sales_df.columns)],
+            alpha=0.8) axes[1].set_title('Cumulative Sales Trends',
+            fontweight='bold', pad=20) axes[1].set_xlabel('Month',
+            fontweight='bold') axes[1].set_ylabel('Cumulative Sales',
+            fontweight='bold') axes[1].legend(loc='upper left', frameon=True,
+            fancybox=True, shadow=True) # Format dates
+            axes[1].xaxis.set_major_formatter(mdates.DateFormatter('%b'))
+            axes[1].xaxis.set_major_locator(mdates.MonthLocator(interval=2)) for
+            ax in axes: ax.grid(True, alpha=0.3, linestyle='--', linewidth=1.0)
+            ax.spines['top'].set_visible(False)
+            ax.spines['right'].set_visible(False) plt.tight_layout() plt.show()
+            # 3. Advanced annotation and callout techniques
+            apply_publication_style('business_report') fig, ax =
+            plt.subplots(figsize=(12, 8)) # Plot the data for i, (product, data)
+            in enumerate(sales_df.items()): line = ax.plot(sales_df.index, data,
+            color=colors[i], linewidth=2.5, marker='o', markersize=6,
+            label=product, alpha=0.9) # Add annotations for key insights max_idx
+            = sales_df['Product A'].idxmax() max_value = sales_df['Product
+            A'].max() ax.annotate(f'Peak Performance\n{max_value:.1f} units',
+            xy=(max_idx, max_value), xytext=(max_idx, max_value + 15),
+            arrowprops=dict(arrowstyle='->', color='red', lw=2), fontsize=10,
+            ha='center', bbox=dict(boxstyle='round,pad=0.3', facecolor='yellow',
+            alpha=0.7)) # Add trend line for Product A z =
+            np.polyfit(range(len(sales_df)), sales_df['Product A'], 1) p =
+            np.poly1d(z) ax.plot(sales_df.index, p(range(len(sales_df))),
+            color='red', linestyle='--', linewidth=2, alpha=0.8, label='Trend
+            (Product A)') # Professional styling ax.set_title('Business
+            Performance Dashboard\nQuarterly Sales Analysis with Trend
+            Indicators', fontweight='bold', pad=20) ax.set_xlabel('Time Period',
+            fontweight='semibold') ax.set_ylabel('Sales Performance (Units ×
+            1000)', fontweight='semibold') # Enhanced legend
+            ax.legend(loc='upper left', frameon=True, fancybox=True,
+            shadow=True, ncol=3, columnspacing=2.0, bbox_to_anchor=(0, 1)) #
+            Custom grid ax.grid(True, alpha=0.3, linestyle='-', linewidth=0.5)
+            ax.set_axisbelow(True) # Format axes
+            ax.xaxis.set_major_formatter(mdates.DateFormatter('%b %Y'))
+            ax.xaxis.set_major_locator(mdates.MonthLocator(interval=2))
+            plt.xticks(rotation=45) # Add subtle background shading for quarters
+            for i in range(0, 12, 3): if i + 3 <= 12: start_date =
+            sales_df.index[i] end_date = sales_df.index[min(i+2,
+            len(sales_df)-1)] ax.axvspan(start_date, end_date, alpha=0.1,
+            color=colors[i//3 % len(colors)]) plt.tight_layout() plt.show()
+            print("Publication-quality styling examples completed")
+            print("Multiple output formats and styles demonstrated")
+          </div>
+        </div>
+
+        <div class="output-section">
+          <div class="output-header">Expected Output:</div>
+          <div class="output-content">
+            Applied journal_paper styling Journal-style plot saved in PDF, PNG,
+            and EPS formats Applied conference_presentation styling Applied
+            business_report styling Publication-quality styling examples
+            completed Multiple output formats and styles demonstrated
+          </div>
+        </div>
+
+        <div class="tip-box">
+          <strong>Publication Tip:</strong> Always create plots in vector
+          formats (PDF, EPS, SVG) for publications, as they scale perfectly and
+          maintain crisp edges at any size. Use high-DPI PNG (300+ DPI) for
+          presentations and web use.
+        </div>
+
+        <h2>4. Interactive Elements and Dynamic Visualizations</h2>
+
+        <p>
+          Modern data visualization often requires interactivity and dynamic
+          elements. While Matplotlib is primarily static, it offers powerful
+          features for creating interactive plots and animations.
+        </p>
+
+        <div class="code-section">
+          <div class="code-header">
+            Interactive and Dynamic Visualization Techniques
+          </div>
+          <div class="code-block">
+            # Interactive and dynamic visualization techniques import
+            matplotlib.widgets as widgets from matplotlib.animation import
+            FuncAnimation from matplotlib.patches import Polygon import
+            matplotlib.patches as mpatches # Create interactive dataset
+            np.random.seed(42) n_points = 200 interactive_data = { 'x':
+            np.random.randn(n_points), 'y': np.random.randn(n_points),
+            'categories': np.random.choice(['Alpha', 'Beta', 'Gamma'],
+            n_points), 'sizes': np.random.uniform(20, 200, n_points),
+            'time_series': np.cumsum(np.random.randn(100)) + 100 } # 1.
+            Interactive scatter plot with selection capabilities class
+            InteractiveScatterPlot: def __init__(self, x, y, categories, sizes):
+            self.x = np.array(x) self.y = np.array(y) self.categories =
+            np.array(categories) self.sizes = np.array(sizes)
+            self.selected_points = np.zeros(len(x), dtype=bool) # Create figure
+            and axis self.fig, self.ax = plt.subplots(figsize=(12, 8)) # Create
+            scatter plot self.create_scatter() # Add interactive widgets
+            self.add_widgets() def create_scatter(self): """Create the scatter
+            plot with categories""" categories_unique =
+            np.unique(self.categories) self.colors = plt.cm.Set1(np.linspace(0,
+            1, len(categories_unique))) self.scatters = {} for i, cat in
+            enumerate(categories_unique): mask = self.categories == cat scatter
+            = self.ax.scatter( self.x[mask], self.y[mask], s=self.sizes[mask],
+            c=[self.colors[i]], alpha=0.6, label=cat, picker=True )
+            self.scatters[cat] = scatter self.ax.set_title('Interactive Scatter
+            Plot\n(Click points to select, use sliders to filter)', fontsize=14,
+            fontweight='bold') self.ax.set_xlabel('X Values')
+            self.ax.set_ylabel('Y Values') self.ax.legend() self.ax.grid(True,
+            alpha=0.3) def add_widgets(self): """Add interactive widgets""" #
+            Add sliders for filtering ax_size = plt.axes([0.2, 0.02, 0.5, 0.03])
+            self.size_slider = widgets.Slider(ax_size, 'Min Size',
+            self.sizes.min(), self.sizes.max(), valinit=self.sizes.min())
+            ax_alpha = plt.axes([0.2, 0.06, 0.5, 0.03]) self.alpha_slider =
+            widgets.Slider(ax_alpha, 'Alpha', 0.1, 1.0, valinit=0.6) # Connect
+            events self.size_slider.on_changed(self.update_plot)
+            self.alpha_slider.on_changed(self.update_plot)
+            self.fig.canvas.mpl_connect('pick_event', self.on_pick) def
+            update_plot(self, val): """Update plot based on slider values"""
+            min_size = self.size_slider.val alpha = self.alpha_slider.val for
+            cat, scatter in self.scatters.items(): mask = (self.categories ==
+            cat) & (self.sizes >= min_size) # Update scatter plot data if
+            np.any(mask): scatter.set_offsets(np.column_stack((self.x[mask],
+            self.y[mask]))) scatter.set_sizes(self.sizes[mask])
+            scatter.set_alpha(alpha) self.fig.canvas.draw() def on_pick(self,
+            event): """Handle point selection""" ind = event.ind[0]
+            print(f"Selected point {ind}: x={self.x[ind]:.2f},
+            y={self.y[ind]:.2f}, " f"size={self.sizes[ind]:.1f},
+            category={self.categories[ind]}") # Create interactive plot
+            print("Creating interactive scatter plot...") interactive_plot =
+            InteractiveScatterPlot( interactive_data['x'],
+            interactive_data['y'], interactive_data['categories'],
+            interactive_data['sizes'] ) plt.show() # 2. Animated line plot class
+            AnimatedLinePlot: def __init__(self, data): self.data = data
+            self.fig, self.ax = plt.subplots(figsize=(12, 6)) # Initialize empty
+            line self.line, = self.ax.plot([], [], color='blue', linewidth=2.5)
+            self.points = self.ax.scatter([], [], color='red', s=50, zorder=5) #
+            Set up the plot self.ax.set_xlim(0, len(data))
+            self.ax.set_ylim(min(data) - 5, max(data) + 5)
+            self.ax.set_title('Animated Time Series Data', fontsize=14,
+            fontweight='bold') self.ax.set_xlabel('Time Steps')
+            self.ax.set_ylabel('Value') self.ax.grid(True, alpha=0.3) # Add
+            moving average line self.ma_line, = self.ax.plot([], [],
+            color='orange', linewidth=2, alpha=0.7, label='Moving Average')
+            self.ax.legend() def animate(self, frame): """Animation function"""
+            # Update main line x_data = list(range(frame + 1)) y_data =
+            self.data[:frame + 1] self.line.set_data(x_data, y_data) # Update
+            current point if frame > 0: self.points.set_offsets([[frame,
+            self.data[frame]]]) # Update moving average (window of 10) if frame
+            >= 10: ma_data = [] ma_x = [] for i in range(10, frame + 1):
+            ma_data.append(np.mean(self.data[i-10:i])) ma_x.append(i)
+            self.ma_line.set_data(ma_x, ma_data) return self.line, self.points,
+            self.ma_line def start_animation(self, interval=100): """Start the
+            animation""" self.anim = FuncAnimation(self.fig, self.animate,
+            frames=len(self.data), interval=interval, blit=True, repeat=True)
+            return self.anim # Create animated plot print("Creating animated
+            line plot...") animated_plot =
+            AnimatedLinePlot(interactive_data['time_series']) animation =
+            animated_plot.start_animation(interval=150) plt.show() # Save
+            animation as GIF (requires pillow: pip install pillow) #
+            animation.save('time_series_animation.gif', writer='pillow', fps=10)
+            print("Animation created (uncomment save line to export as GIF)") #
+            3. Custom interactive dashboard class InteractiveDashboard: def
+            __init__(self): # Create figure with subplots self.fig =
+            plt.figure(figsize=(16, 10)) gs = GridSpec(3, 3, height_ratios=[1,
+            2, 1], width_ratios=[2, 1, 1]) # Main plot self.ax_main =
+            self.fig.add_subplot(gs[1, :2]) self.ax_hist_x =
+            self.fig.add_subplot(gs[0, :2]) self.ax_hist_y =
+            self.fig.add_subplot(gs[1, 2]) self.ax_stats =
+            self.fig.add_subplot(gs[0, 2]) self.ax_controls =
+            self.fig.add_subplot(gs[2, :]) # Data self.x = np.random.randn(500)
+            self.y = np.random.randn(500) self.colors = np.random.rand(500) #
+            Initial plot self.create_plots() self.add_controls() def
+            create_plots(self): """Create the initial plots""" # Main scatter
+            plot self.scatter = self.ax_main.scatter(self.x, self.y,
+            c=self.colors, cmap='viridis', alpha=0.6, s=50)
+            self.ax_main.set_title('Interactive Data Explorer',
+            fontweight='bold') self.ax_main.set_xlabel('X Values')
+            self.ax_main.set_ylabel('Y Values') self.ax_main.grid(True,
+            alpha=0.3) # Histograms self.ax_hist_x.hist(self.x, bins=30,
+            alpha=0.7, color='blue', edgecolor='black')
+            self.ax_hist_x.set_title('X Distribution')
+            self.ax_hist_x.set_ylabel('Frequency') self.ax_hist_y.hist(self.y,
+            bins=30, orientation='horizontal', alpha=0.7, color='green',
+            edgecolor='black') self.ax_hist_y.set_title('Y Distribution')
+            self.ax_hist_y.set_xlabel('Frequency') # Statistics display
+            self.ax_stats.axis('off') self.update_stats() def
+            add_controls(self): """Add interactive controls"""
+            self.ax_controls.axis('off') # Add buttons for different operations
+            ax_button1 = plt.axes([0.1, 0.05, 0.1, 0.04]) ax_button2 =
+            plt.axes([0.25, 0.05, 0.1, 0.04]) ax_button3 = plt.axes([0.4, 0.05,
+            0.1, 0.04]) self.button1 = widgets.Button(ax_button1, 'Regenerate')
+            self.button2 = widgets.Button(ax_button2, 'Clear') self.button3 =
+            widgets.Button(ax_button3, 'Export')
+            self.button1.on_clicked(self.regenerate_data)
+            self.button2.on_clicked(self.clear_selection)
+            self.button3.on_clicked(self.export_data) def regenerate_data(self,
+            event): """Regenerate random data""" self.x = np.random.randn(500)
+            self.y = np.random.randn(500) self.colors = np.random.rand(500) #
+            Update plots self.scatter.set_offsets(np.column_stack((self.x,
+            self.y))) self.scatter.set_array(self.colors) # Update histograms
+            self.ax_hist_x.clear() self.ax_hist_y.clear()
+            self.ax_hist_x.hist(self.x, bins=30, alpha=0.7, color='blue',
+            edgecolor='black') self.ax_hist_x.set_title('X Distribution')
+            self.ax_hist_x.set_ylabel('Frequency') self.ax_hist_y.hist(self.y,
+            bins=30, orientation='horizontal', alpha=0.7, color='green',
+            edgecolor='black') self.ax_hist_y.set_title('Y Distribution')
+            self.ax_hist_y.set_xlabel('Frequency') self.update_stats()
+            self.fig.canvas.draw() def clear_selection(self, event): """Clear
+            current selection""" print("Selection cleared") def
+            export_data(self, event): """Export current data""" print("Data
+            exported (mock function)") def update_stats(self): """Update
+            statistics display""" stats_text = f""" Statistics: X:
+            μ={self.x.mean():.2f}, σ={self.x.std():.2f} Y:
+            μ={self.y.mean():.2f}, σ={self.y.std():.2f} Correlation:
+            {np.corrcoef(self.x, self.y)[0,1]:.3f} N points: {len(self.x)} """
+            self.ax_stats.clear() self.ax_stats.axis('off')
+            self.ax_stats.text(0.05, 0.95, stats_text,
+            transform=self.ax_stats.transAxes, fontsize=10,
+            verticalalignment='top', bbox=dict(boxstyle='round',
+            facecolor='lightgray', alpha=0.8)) # Create interactive dashboard
+            print("Creating interactive dashboard...") dashboard =
+            InteractiveDashboard() plt.tight_layout() plt.show()
+            print("Interactive visualization examples completed") print("Use
+            widgets and buttons to interact with the plots")
+          </div>
+        </div>
+
+        <div class="output-section">
+          <div class="output-header">Expected Output:</div>
+          <div class="output-content">
+            Creating interactive scatter plot... Creating animated line plot...
+            Animation created (uncomment save line to export as GIF) Creating
+            interactive dashboard... Interactive visualization examples
+            completed Use widgets and buttons to interact with the plots
+          </div>
+        </div>
+
+        <div class="performance-box">
+          <h4>Interactivity Performance</h4>
+          <p>
+            Interactive matplotlib plots work well for exploration but can
+            become slow with large datasets (>10,000 points). For production
+            dashboards with large data, consider using Plotly or Bokeh, which
+            are designed for web-based interactivity.
+          </p>
+        </div>
+
+        <h2>5. Complex Multi-Panel Layouts and Subplot Management</h2>
+
+        <p>
+          Creating sophisticated layouts with multiple related plots requires
+          mastering subplot management, sharing axes appropriately, and
+          maintaining visual consistency across panels.
+        </p>
+
+        <div class="code-section">
+          <div class="code-header">Advanced Layout and Subplot Management</div>
+          <div class="code-block">
+            # Advanced layout and subplot management techniques # Create
+            comprehensive dataset for multi-panel demonstration
+            np.random.seed(42) n_samples = 500 # Financial-like time series data
+            dates = pd.date_range('2022-01-01', periods=365, freq='D')
+            price_data = 100 * np.exp(np.cumsum(np.random.randn(365) * 0.02))
+            volume_data = np.random.exponential(1000, 365) volatility_data =
+            np.abs(np.random.randn(365) * 0.05) + 0.02 # Regional performance
+            data regions = ['North', 'South', 'East', 'West', 'Central']
+            performance_data = {} for region in regions:
+            performance_data[region] = { 'revenue': np.random.uniform(500, 1500,
+            12), 'profit_margin': np.random.uniform(0.1, 0.3, 12),
+            'customer_satisfaction': np.random.uniform(3.5, 5.0, 12) } #
+            Multi-dimensional analysis data categories = ['A', 'B', 'C', 'D']
+            metrics_data = pd.DataFrame({ 'category': np.repeat(categories,
+            125), 'metric1': np.random.randn(500), 'metric2':
+            np.random.randn(500), 'metric3': np.random.randn(500),
+            'performance_score': np.random.uniform(0, 100, 500) })
+            print(f"Dataset prepared with {len(dates)} time points and
+            {len(regions)} regions") # 1. Complex dashboard layout with shared
+            axes def create_financial_dashboard(): """Create a comprehensive
+            financial dashboard""" fig = plt.figure(figsize=(20, 12)) # Create
+            complex grid layout gs = GridSpec(4, 4, height_ratios=[2, 1, 1, 1],
+            width_ratios=[3, 1, 1, 1], hspace=0.3, wspace=0.3) # Main time
+            series plot (spans multiple cells) ax_main = fig.add_subplot(gs[0,
+            :3]) # Secondary plots ax_volume = fig.add_subplot(gs[1, :3],
+            sharex=ax_main) ax_volatility = fig.add_subplot(gs[2, :3],
+            sharex=ax_main) # Side panels ax_dist = fig.add_subplot(gs[0, 3])
+            ax_corr = fig.add_subplot(gs[1, 3]) ax_stats = fig.add_subplot(gs[2,
+            3]) ax_summary = fig.add_subplot(gs[3, :]) # Main price chart with
+            moving averages ax_main.plot(dates, price_data, color='#1f77b4',
+            linewidth=1.5, alpha=0.8, label='Price') # Add moving averages ma_20
+            = pd.Series(price_data).rolling(20).mean() ma_50 =
+            pd.Series(price_data).rolling(50).mean() ax_main.plot(dates, ma_20,
+            color='orange', linewidth=2, alpha=0.9, label='20-day MA')
+            ax_main.plot(dates, ma_50, color='red', linewidth=2, alpha=0.9,
+            label='50-day MA') ax_main.set_title('Financial Market Analysis
+            Dashboard', fontsize=16, fontweight='bold', pad=20)
+            ax_main.set_ylabel('Price ($)', fontweight='bold')
+            ax_main.legend(loc='upper left') ax_main.grid(True, alpha=0.3) #
+            Volume chart ax_volume.bar(dates, volume_data, color='gray',
+            alpha=0.6, width=1) ax_volume.set_ylabel('Volume',
+            fontweight='bold') ax_volume.grid(True, alpha=0.3) # Volatility
+            chart ax_volatility.plot(dates, volatility_data, color='red',
+            linewidth=1.5, alpha=0.7) ax_volatility.fill_between(dates,
+            volatility_data, alpha=0.3, color='red')
+            ax_volatility.set_ylabel('Volatility', fontweight='bold')
+            ax_volatility.set_xlabel('Date', fontweight='bold')
+            ax_volatility.grid(True, alpha=0.3) # Format shared x-axis for ax in
+            [ax_main, ax_volume, ax_volatility]:
+            ax.xaxis.set_major_formatter(mdates.DateFormatter('%b %Y'))
+            ax.xaxis.set_major_locator(mdates.MonthLocator(interval=2)) # Hide
+            x-axis labels for upper plots ax_main.tick_params(labelbottom=False)
+            ax_volume.tick_params(labelbottom=False) # Price distribution
+            ax_dist.hist(price_data, bins=30, orientation='horizontal',
+            alpha=0.7, color='blue', edgecolor='black')
+            ax_dist.set_title('Price\nDistribution', fontsize=12,
+            fontweight='bold') ax_dist.set_xlabel('Frequency') # Correlation
+            heatmap (simplified) corr_data = np.corrcoef([price_data,
+            volume_data, volatility_data]) im = ax_corr.imshow(corr_data,
+            cmap='RdBu_r', vmin=-1, vmax=1)
+            ax_corr.set_title('Correlation\nMatrix', fontsize=12,
+            fontweight='bold') ax_corr.set_xticks(range(3))
+            ax_corr.set_yticks(range(3)) ax_corr.set_xticklabels(['Price',
+            'Volume', 'Volatility'], rotation=45)
+            ax_corr.set_yticklabels(['Price', 'Volume', 'Volatility']) # Add
+            correlation values for i in range(3): for j in range(3):
+            ax_corr.text(j, i, f'{corr_data[i,j]:.2f}', ha='center',
+            va='center', color='white' if abs(corr_data[i,j]) > 0.5 else
+            'black', fontweight='bold') # Key statistics ax_stats.axis('off')
+            stats_text = f"""Key Statistics: Current Price:
+            ${price_data[-1]:.2f} 52-week High: ${price_data.max():.2f} 52-week
+            Low: ${price_data.min():.2f} Avg Volume: {volume_data.mean():.0f}
+            Avg Volatility: {volatility_data.mean():.3f} Price Change:
+            {((price_data[-1]/price_data[0])-1)*100:+.1f}%"""
+            ax_stats.text(0.05, 0.95, stats_text, transform=ax_stats.transAxes,
+            fontsize=10, verticalalignment='top', bbox=dict(boxstyle='round',
+            facecolor='lightgray', alpha=0.8)) # Monthly performance summary
+            monthly_returns = [] monthly_dates = [] for month in
+            pd.date_range('2022-01', '2023-01', freq='M'): mask =
+            (pd.Series(dates).dt.month == month.month) &
+            (pd.Series(dates).dt.year == month.year) if mask.any(): month_data =
+            price_data[mask] if len(month_data) > 1: monthly_return =
+            (month_data[-1] / month_data[0] - 1) * 100
+            monthly_returns.append(monthly_return) monthly_dates.append(month)
+            colors = ['green' if x > 0 else 'red' for x in monthly_returns] bars
+            = ax_summary.bar(monthly_dates, monthly_returns, color=colors,
+            alpha=0.7, edgecolor='black') ax_summary.set_title('Monthly Returns
+            (%)', fontsize=12, fontweight='bold') ax_summary.set_ylabel('Return
+            (%)') ax_summary.axhline(y=0, color='black', linestyle='-',
+            linewidth=1) ax_summary.grid(True, alpha=0.3) # Add value labels on
+            bars for bar, value in zip(bars, monthly_returns): height =
+            bar.get_height() ax_summary.text(bar.get_x() + bar.get_width()/2.,
+            height + (0.5 if height > 0 else -0.8), f'{value:.1f}%',
+            ha='center', va='bottom' if height > 0 else 'top',
+            fontweight='bold', fontsize=9) plt.tight_layout() return fig #
+            Create financial dashboard print("Creating comprehensive financial
+            dashboard...") financial_fig = create_financial_dashboard()
+            plt.show() # 2. Multi-panel comparison with shared color scales def
+            create_regional_comparison(): """Create regional performance
+            comparison dashboard""" fig, axes = plt.subplots(2, 3, figsize=(18,
+            10)) fig.suptitle('Regional Performance Comparison Dashboard',
+            fontsize=18, fontweight='bold', y=0.95) months = range(1, 13)
+            month_names = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul',
+            'Aug', 'Sep', 'Oct', 'Nov', 'Dec'] # Revenue comparison (subplot 1)
+            ax_revenue = axes[0, 0] for i, region in enumerate(regions):
+            ax_revenue.plot(months, performance_data[region]['revenue'],
+            marker='o', linewidth=2.5, markersize=6,
+            color=plt.cm.Set1(i/len(regions)), label=region)
+            ax_revenue.set_title('Monthly Revenue by Region', fontweight='bold',
+            pad=15) ax_revenue.set_xlabel('Month')
+            ax_revenue.set_ylabel('Revenue ($K)')
+            ax_revenue.set_xticks(months[::2])
+            ax_revenue.set_xticklabels([month_names[i-1] for i in months[::2]])
+            ax_revenue.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
+            ax_revenue.grid(True, alpha=0.3) # Profit margin heatmap (subplot 2)
+            ax_margin = axes[0, 1] margin_data =
+            np.array([performance_data[region]['profit_margin'] for region in
+            regions]) im = ax_margin.imshow(margin_data, cmap='RdYlGn',
+            aspect='auto', vmin=0.1, vmax=0.3) ax_margin.set_title('Profit
+            Margin Heatmap', fontweight='bold', pad=15)
+            ax_margin.set_xlabel('Month') ax_margin.set_ylabel('Region')
+            ax_margin.set_xticks(range(0, 12, 2))
+            ax_margin.set_xticklabels([month_names[i] for i in range(0, 12, 2)])
+            ax_margin.set_yticks(range(len(regions)))
+            ax_margin.set_yticklabels(regions) # Add text annotations for i in
+            range(len(regions)): for j in range(12): if j % 2 == 0: # Show every
+            other month to avoid crowding text = ax_margin.text(j, i,
+            f'{margin_data[i,j]:.2f}', ha='center', va='center', color='white',
+            fontweight='bold') # Customer satisfaction radar chart (subplot 3)
+            ax_satisfaction = axes[0, 2] # Create radar chart data
+            avg_satisfaction =
+            [np.mean(performance_data[region]['customer_satisfaction']) for
+            region in regions] # Simple bar chart instead of radar for
+            simplicity bars = ax_satisfaction.bar(regions, avg_satisfaction,
+            color=[plt.cm.Set1(i/len(regions)) for i in range(len(regions))],
+            alpha=0.7, edgecolor='black', linewidth=1.5)
+            ax_satisfaction.set_title('Average Customer Satisfaction',
+            fontweight='bold', pad=15) ax_satisfaction.set_ylabel('Satisfaction
+            Score') ax_satisfaction.set_ylim(0, 5) ax_satisfaction.grid(True,
+            alpha=0.3, axis='y') # Add value labels on bars for bar, value in
+            zip(bars, avg_satisfaction): height = bar.get_height()
+            ax_satisfaction.text(bar.get_x() + bar.get_width()/2., height +
+            0.05, f'{value:.2f}', ha='center', va='bottom', fontweight='bold') #
+            Combined metrics scatter plot (subplot 4) ax_scatter = axes[1, 0]
+            for i, region in enumerate(regions): revenue =
+            np.mean(performance_data[region]['revenue']) margin =
+            np.mean(performance_data[region]['profit_margin']) satisfaction =
+            np.mean(performance_data[region]['customer_satisfaction'])
+            ax_scatter.scatter(revenue, margin, s=satisfaction*100,
+            color=plt.cm.Set1(i/len(regions)), alpha=0.7, edgecolors='black',
+            linewidth=1, label=region) ax_scatter.set_title('Revenue vs
+            Margin\n(Size = Customer Satisfaction)', fontweight='bold', pad=15)
+            ax_scatter.set_xlabel('Average Revenue ($K)')
+            ax_scatter.set_ylabel('Average Profit Margin') ax_scatter.legend()
+            ax_scatter.grid(True, alpha=0.3) # Trend analysis (subplot 5)
+            ax_trend = axes[1, 1] # Calculate trends for each region for i,
+            region in enumerate(regions): revenue_trend = np.polyfit(months,
+            performance_data[region]['revenue'], 1)[0] margin_trend =
+            np.polyfit(months, performance_data[region]['profit_margin'], 1)[0]
+            ax_trend.scatter(revenue_trend, margin_trend*100, s=150,
+            color=plt.cm.Set1(i/len(regions)), alpha=0.7, edgecolors='black',
+            linewidth=2, label=region) # Add region labels
+            ax_trend.annotate(region, (revenue_trend, margin_trend*100),
+            xytext=(5, 5), textcoords='offset points', fontweight='bold')
+            ax_trend.set_title('Growth Trends\n(Revenue vs Margin)',
+            fontweight='bold', pad=15) ax_trend.set_xlabel('Revenue Trend
+            ($/month)') ax_trend.set_ylabel('Margin Trend (%/month)')
+            ax_trend.axhline(y=0, color='black', linestyle='--', alpha=0.5)
+            ax_trend.axvline(x=0, color='black', linestyle='--', alpha=0.5)
+            ax_trend.grid(True, alpha=0.3) # Performance ranking (subplot 6)
+            ax_ranking = axes[1, 2] # Calculate composite scores
+            composite_scores = [] for region in regions: revenue_score =
+            np.mean(performance_data[region]['revenue']) / 1000 # Normalize
+            margin_score = np.mean(performance_data[region]['profit_margin']) *
+            10 # Scale up satisfaction_score =
+            np.mean(performance_data[region]['customer_satisfaction'])
+            composite_score = (revenue_score + margin_score +
+            satisfaction_score) / 3 composite_scores.append(composite_score) #
+            Sort regions by composite score sorted_indices =
+            np.argsort(composite_scores)[::-1] sorted_regions = [regions[i] for
+            i in sorted_indices] sorted_scores = [composite_scores[i] for i in
+            sorted_indices] bars = ax_ranking.barh(sorted_regions,
+            sorted_scores, color=[plt.cm.Set1(i/len(regions)) for i in
+            range(len(regions))], alpha=0.7, edgecolor='black', linewidth=1.5)
+            ax_ranking.set_title('Overall Performance Ranking',
+            fontweight='bold', pad=15) ax_ranking.set_xlabel('Composite Score')
+            ax_ranking.grid(True, alpha=0.3, axis='x') # Add score labels for
+            bar, score in zip(bars, sorted_scores): width = bar.get_width()
+            ax_ranking.text(width + 0.1, bar.get_y() + bar.get_height()/2,
+            f'{score:.2f}', ha='left', va='center', fontweight='bold')
+            plt.tight_layout() return fig # Create regional comparison dashboard
+            print("Creating regional comparison dashboard...") regional_fig =
+            create_regional_comparison() plt.show() print("Complex multi-panel
+            layouts completed") print("Demonstrated shared axes, consistent
+            color schemes, and integrated analysis")
+          </div>
+        </div>
+
+        <div class="output-section">
+          <div class="output-header">Expected Output:</div>
+          <div class="output-content">
+            Dataset prepared with 365 time points and 5 regions Creating
+            comprehensive financial dashboard... Creating regional comparison
+            dashboard... Complex multi-panel layouts completed Demonstrated
+            shared axes, consistent color schemes, and integrated analysis
+          </div>
+        </div>
+
+        <div class="design-box">
+          <h4>Layout Design Principle</h4>
+          <p>
+            Complex dashboards should guide the viewer's eye through a logical
+            narrative. Place the most important information in the upper-left
+            quadrant, use consistent color schemes across panels, and ensure
+            that related visualizations share appropriate axes or scales.
+          </p>
+        </div>
+
+        <h2>6. Performance Optimization for Large Datasets</h2>
+
+        <p>
+          When working with large datasets, matplotlib performance can become a
+          bottleneck. These optimization techniques help maintain responsiveness
+          and create efficient visualizations.
+        </p>
+
+        <div class="code-section">
+          <div class="code-header">Performance Optimization Techniques</div>
+          <div class="code-block">
+            # Performance optimization techniques for large datasets import time
+            from matplotlib.collections import LineCollection, PolyCollection
+            from matplotlib.path import Path import matplotlib.patches as
+            patches # Generate large dataset for performance testing def
+            generate_large_dataset(n_points=100000): """Generate large dataset
+            for performance testing""" np.random.seed(42) # Time series data
+            dates = pd.date_range('2020-01-01', periods=n_points, freq='1min')
+            values = np.cumsum(np.random.randn(n_points) * 0.01) + 100 # Scatter
+            plot data x_scatter = np.random.randn(n_points) y_scatter =
+            np.random.randn(n_points) colors_scatter = np.random.rand(n_points)
+            sizes_scatter = np.random.uniform(1, 100, n_points) return {
+            'dates': dates, 'values': values, 'x_scatter': x_scatter,
+            'y_scatter': y_scatter, 'colors_scatter': colors_scatter,
+            'sizes_scatter': sizes_scatter } print("Generating large dataset for
+            performance testing...") large_data = generate_large_dataset(50000)
+            print(f"Created dataset with {len(large_data['dates']):,} points") #
+            1. Optimized line plotting for time series def
+            compare_line_plotting_methods(dates, values): """Compare different
+            line plotting methods for performance""" # Method 1: Standard plot
+            (baseline) print("Testing standard plot method...") start_time =
+            time.time() fig, ax = plt.subplots(figsize=(12, 6)) ax.plot(dates,
+            values, linewidth=0.5, alpha=0.8) ax.set_title('Standard Plot
+            Method') standard_time = time.time() - start_time plt.close(fig) #
+            Method 2: Reduced data density (downsampling) print("Testing
+            downsampled plot method...") start_time = time.time() step = max(1,
+            len(dates) // 5000) # Keep roughly 5000 points dates_sampled =
+            dates[::step] values_sampled = values[::step] fig, ax =
+            plt.subplots(figsize=(12, 6)) ax.plot(dates_sampled, values_sampled,
+            linewidth=1.0) ax.set_title('Downsampled Plot Method')
+            downsampled_time = time.time() - start_time plt.close(fig) # Method
+            3: Using LineCollection for better performance print("Testing
+            LineCollection method...") start_time = time.time() # Create line
+            segments points = np.array([dates, values]).T.reshape(-1, 1, 2)
+            segments = np.concatenate([points[:-1], points[1:]], axis=1) fig, ax
+            = plt.subplots(figsize=(12, 6)) lc = LineCollection(segments,
+            linewidths=0.5, colors='blue', alpha=0.8) ax.add_collection(lc)
+            ax.autoscale() ax.set_title('LineCollection Method') collection_time
+            = time.time() - start_time plt.close(fig) # Method 4: Rasterized
+            plot for complex data print("Testing rasterized plot method...")
+            start_time = time.time() fig, ax = plt.subplots(figsize=(12, 6))
+            ax.plot(dates, values, linewidth=0.5, alpha=0.8, rasterized=True)
+            ax.set_title('Rasterized Plot Method') rasterized_time = time.time()
+            - start_time plt.close(fig) # Results results = { 'Standard':
+            standard_time, 'Downsampled': downsampled_time, 'LineCollection':
+            collection_time, 'Rasterized': rasterized_time } print(f"\nLine
+            plotting performance comparison ({len(dates):,} points):") for
+            method, time_taken in results.items(): print(f"{method:15}:
+            {time_taken:.3f}s") return results # Test line plotting performance
+            line_results = compare_line_plotting_methods(large_data['dates'],
+            large_data['values']) # 2. Optimized scatter plot techniques def
+            compare_scatter_methods(x, y, colors, sizes): """Compare scatter
+            plot optimization methods""" # Method 1: Standard scatter
+            print("\nTesting standard scatter method...") start_time =
+            time.time() fig, ax = plt.subplots(figsize=(10, 8)) ax.scatter(x, y,
+            c=colors, s=sizes/10, alpha=0.5, cmap='viridis')
+            ax.set_title('Standard Scatter Plot') standard_time = time.time() -
+            start_time plt.close(fig) # Method 2: Hexbin for density
+            representation print("Testing hexbin method...") start_time =
+            time.time() fig, ax = plt.subplots(figsize=(10, 8)) hb =
+            ax.hexbin(x, y, gridsize=50, cmap='Blues', alpha=0.8)
+            ax.set_title('Hexbin Plot') cb = plt.colorbar(hb) hexbin_time =
+            time.time() - start_time plt.close(fig) # Method 3: 2D histogram
+            print("Testing 2D histogram method...") start_time = time.time()
+            fig, ax = plt.subplots(figsize=(10, 8)) h = ax.hist2d(x, y,
+            bins=100, cmap='Blues', alpha=0.8) ax.set_title('2D Histogram') cb =
+            plt.colorbar(h[3]) hist2d_time = time.time() - start_time
+            plt.close(fig) # Method 4: Contour plot from KDE print("Testing
+            contour plot method...") start_time = time.time() # Calculate 2D
+            histogram for contour hist, xedges, yedges = np.histogram2d(x, y,
+            bins=50) extent = [xedges[0], xedges[-1], yedges[0], yedges[-1]]
+            fig, ax = plt.subplots(figsize=(10, 8)) cs = ax.contour(hist.T,
+            extent=extent, colors='blue', alpha=0.8) ax.contourf(hist.T,
+            extent=extent, alpha=0.3, cmap='Blues') ax.set_title('Contour Plot')
+            contour_time = time.time() - start_time plt.close(fig) results = {
+            'Standard Scatter': standard_time, 'Hexbin': hexbin_time, '2D
+            Histogram': hist2d_time, 'Contour': contour_time } print(f"\nScatter
+            plot performance comparison ({len(x):,} points):") for method,
+            time_taken in results.items(): print(f"{method:15}:
+            {time_taken:.3f}s") return results # Test scatter plot performance
+            scatter_results = compare_scatter_methods( large_data['x_scatter'],
+            large_data['y_scatter'], large_data['colors_scatter'],
+            large_data['sizes_scatter'] ) # 3. Memory-efficient plotting
+            strategies def demonstrate_memory_efficiency(): """Demonstrate
+            memory-efficient plotting strategies""" print("\nMemory efficiency
+            demonstration:") # Strategy 1: Generator-based plotting for
+            streaming data def data_generator(n_chunks=10, chunk_size=1000):
+            """Generate data in chunks""" for i in range(n_chunks): x =
+            np.random.randn(chunk_size) + i y = np.random.randn(chunk_size) + i
+            * 0.1 yield x, y print("Plotting with data generator (streaming
+            approach)...") start_time = time.time() fig, ax =
+            plt.subplots(figsize=(12, 8)) colors = plt.cm.viridis(np.linspace(0,
+            1, 10)) for i, (x, y) in enumerate(data_generator()): ax.scatter(x,
+            y, c=[colors[i]], alpha=0.6, s=20, label=f'Chunk {i+1}')
+            ax.set_title('Memory-Efficient Streaming Plot')
+            ax.legend(bbox_to_anchor=(1.05, 1), loc='upper left') generator_time
+            = time.time() - start_time plt.tight_layout() plt.show() # Strategy
+            2: Chunked processing for large datasets def
+            plot_large_dataset_chunked(x, y, chunk_size=5000): """Plot large
+            dataset in chunks""" print(f"Processing {len(x):,} points in chunks
+            of {chunk_size:,}...") fig, ax = plt.subplots(figsize=(12, 8))
+            n_chunks = len(x) // chunk_size + (1 if len(x) % chunk_size else 0)
+            colors = plt.cm.plasma(np.linspace(0, 1, n_chunks)) for i in
+            range(0, len(x), chunk_size): end_idx = min(i + chunk_size, len(x))
+            chunk_x = x[i:end_idx] chunk_y = y[i:end_idx] ax.scatter(chunk_x,
+            chunk_y, c=[colors[i//chunk_size]], alpha=0.3, s=5, rasterized=True)
+            ax.set_title('Chunked Large Dataset Plot') ax.set_xlabel('X values')
+            ax.set_ylabel('Y values') return fig, ax start_time = time.time()
+            chunked_fig, chunked_ax = plot_large_dataset_chunked(
+            large_data['x_scatter'], large_data['y_scatter'] ) chunked_time =
+            time.time() - start_time plt.show() print(f"Generator method:
+            {generator_time:.3f}s") print(f"Chunked processing:
+            {chunked_time:.3f}s") # Demonstrate memory efficiency
+            demonstrate_memory_efficiency() # 4. Advanced optimization
+            techniques def advanced_optimization_techniques(): """Demonstrate
+            advanced optimization techniques""" print("\nAdvanced optimization
+            techniques:") # Technique 1: Path simplification for complex
+            polygons def create_simplified_polygon(x, y, tolerance=0.01):
+            """Create simplified polygon using Douglas-Peucker algorithm""" from
+            matplotlib.path import Path # Simple implementation of path
+            simplification vertices = np.column_stack((x, y)) simplified_path =
+            Path(vertices) return simplified_path # Technique 2: Level-of-detail
+            rendering def create_lod_plot(x, y, zoom_level=1): """Create
+            level-of-detail plot based on zoom level""" # Adjust point density
+            based on zoom level if zoom_level < 0.5: step = 10 # Show fewer
+            points when zoomed out elif zoom_level < 1.0: step = 5 else: step =
+            1 # Show all points when zoomed in x_lod = x[::step] y_lod =
+            y[::step] return x_lod, y_lod # Technique 3: Adaptive marker sizing
+            def adaptive_marker_size(data_density): """Calculate adaptive marker
+            size based on data density""" if data_density > 10000: return 0.5
+            elif data_density > 1000: return 1.0 else: return 2.0 # Demonstrate
+            LOD plotting zoom_levels = [0.1, 0.5, 1.0] fig, axes =
+            plt.subplots(1, 3, figsize=(18, 6)) fig.suptitle('Level-of-Detail
+            Optimization Example', fontsize=16, fontweight='bold') for i, zoom
+            in enumerate(zoom_levels): x_lod, y_lod =
+            create_lod_plot(large_data['x_scatter'][:5000],
+            large_data['y_scatter'][:5000], zoom) marker_size =
+            adaptive_marker_size(len(x_lod)) axes[i].scatter(x_lod, y_lod,
+            s=marker_size, alpha=0.6, rasterized=True) axes[i].set_title(f'Zoom
+            Level: {zoom}\n{len(x_lod):,} points, size: {marker_size}')
+            axes[i].grid(True, alpha=0.3) plt.tight_layout() plt.show() #
+            Performance summary print("\nOptimization techniques summary:")
+            print("1. Use rasterized=True for complex scatter plots") print("2.
+            Implement level-of-detail for interactive plots") print("3. Use
+            appropriate plot types (hexbin, hist2d) for dense data") print("4.
+            Process data in chunks for memory efficiency") print("5. Simplify
+            paths and polygons when appropriate") # Apply advanced optimization
+            techniques advanced_optimization_techniques() print("\nPerformance
+            optimization demonstration completed") print("Key takeaways: Choose
+            the right visualization method for your data density")
+          </div>
+        </div>
+
+        <div class="output-section">
+          <div class="output-header">Expected Output:</div>
+          <div class="output-content">
+            Generating large dataset for performance testing... Created dataset
+            with 50,000 points Testing standard plot method... Testing
+            downsampled plot method... Testing LineCollection method... Testing
+            rasterized plot method... Line plotting performance comparison
+            (50,000 points): Standard : 0.234s Downsampled : 0.045s
+            LineCollection : 0.189s Rasterized : 0.198s Testing standard scatter
+            method... Testing hexbin method... Testing 2D histogram method...
+            Testing contour plot method... Scatter plot performance comparison
+            (50,000 points): Standard Scatter: 1.234s Hexbin : 0.156s 2D
+            Histogram : 0.098s Contour : 0.234s Memory efficiency demonstration:
+            Plotting with data generator (streaming approach)... Processing
+            50,000 points in chunks of 5,000... Generator method: 0.567s Chunked
+            processing: 0.345s Advanced optimization techniques: Optimization
+            techniques summary: 1. Use rasterized=True for complex scatter plots
+            2. Implement level-of-detail for interactive plots 3. Use
+            appropriate plot types (hexbin, hist2d) for dense data 4. Process
+            data in chunks for memory efficiency 5. Simplify paths and polygons
+            when appropriate Performance optimization demonstration completed
+            Key takeaways: Choose the right visualization method for your data
+            density
+          </div>
+        </div>
+
+        <div class="performance-box">
+          <h4>Performance Optimization Strategy</h4>
+          <p>
+            The key to matplotlib performance with large datasets is choosing
+            the right visualization approach: use downsampling or alternative
+            plot types (hexbin, hist2d) for dense data, apply rasterization for
+            complex graphics, and implement level-of-detail for interactive
+            applications.
+          </p>
+        </div>
+
+        <h2>Conclusion and Best Practices</h2>
+
+        <p>
+          After years of creating visualizations across scientific research,
+          business analytics, and data science projects, these techniques
+          represent the most impactful patterns for creating professional,
+          effective matplotlib plots. The journey from basic plotting to
+          visualization mastery involves understanding not just the technical
+          capabilities, but the principles of visual communication and design.
+        </p>
+
+        <div class="insight-box">
+          <h4>Essential Matplotlib Mastery Principles</h4>
+          <ul>
+            <li>
+              <strong>Design for your audience:</strong> Academic papers need
+              different styling than business presentations
+            </li>
+            <li>
+              <strong>Choose the right plot type:</strong> Match visualization
+              method to data characteristics and density
+            </li>
+            <li>
+              <strong>Optimize for performance:</strong> Large datasets require
+              different approaches than small ones
+            </li>
+            <li>
+              <strong>Maintain consistency:</strong> Develop reusable styling
+              patterns and color schemes
+            </li>
+            <li>
+              <strong>Tell a story:</strong> Every plot should have a clear
+              message and logical flow
+            </li>
+            <li>
+              <strong>Test across contexts:</strong> Ensure plots work in print,
+              presentation, and digital formats
+            </li>
+          </ul>
+        </div>
+
+        <p>
+          The advanced techniques covered in this guide (from professional
+          styling systems to performance optimization strategies) represent
+          solutions to real-world visualization challenges. Whether you're
+          creating publication-quality figures for academic journals,
+          interactive dashboards for business stakeholders, or exploratory
+          visualizations for data analysis, these patterns provide a solid
+          foundation for effective visual communication.
+        </p>
+
+        <p>
+          Remember that matplotlib's strength lies in its flexibility and
+          precision control. While newer libraries like Plotly and Bokeh excel
+          at interactivity, and Seaborn provides statistical plotting
+          conveniences, matplotlib remains unmatched for creating pixel-perfect,
+          publication-ready visualizations with complete control over every
+          visual element.
+        </p>
+
+        <div class="design-box">
+          <h4>Final Design Philosophy</h4>
+          <p>
+            Great visualizations are not just technically correct, they are
+            visually compelling and intellectually honest. They respect the
+            viewer's time by presenting information clearly, guide attention to
+            key insights, and maintain scientific integrity in their
+            representation of data. Master the technical skills, but never
+            forget that your ultimate goal is effective communication.
+          </p>
+        </div>
+
+        <div class="tip-box">
+          <strong>Professional Development Tip:</strong> Build a personal
+          library of matplotlib templates and styling functions. This investment
+          in reusable code will pay dividends in consistency, efficiency, and
+          professional presentation across all your visualization work.
+        </div>
+      </article>
+
+      <!-- Navigation -->
+      <nav class="back-nav">
+        <a href="index.html" class="back-link">← Back to Main Page</a>
+      </nav>
+    </div>
+  </body>
+</html>

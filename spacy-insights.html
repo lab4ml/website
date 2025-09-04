@@ -1,0 +1,1283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Practical Insights of Using spaCy Library - ML Insights</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.7;
+            color: #333;
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8f0fe 100%);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Header */
+        .blog-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 3rem;
+            border-radius: 20px;
+            text-align: center;
+            margin-bottom: 3rem;
+            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.2);
+        }
+
+        .blog-header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .blog-meta {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-bottom: 1rem;
+        }
+
+        .blog-description {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0.95;
+        }
+
+        /* Content */
+        .blog-content {
+            background: white;
+            padding: 4rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            margin-bottom: 2rem;
+        }
+
+        .blog-content h2 {
+            font-size: 2.2rem;
+            color: #333;
+            margin: 3rem 0 1.5rem 0;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .blog-content h3 {
+            font-size: 1.8rem;
+            color: #444;
+            margin: 2.5rem 0 1rem 0;
+        }
+
+        .blog-content p {
+            margin: 1.5rem 0;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        /* Code blocks */
+        .code-section {
+            margin: 2.5rem 0;
+            background: #f8f9fa;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .code-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem 1.5rem;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 1.5rem;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        /* Output blocks */
+        .output-section {
+            margin: 1.5rem 0 2.5rem 0;
+            background: #f7fafc;
+            border-radius: 10px;
+            border-left: 5px solid #48bb78;
+        }
+
+        .output-header {
+            background: #48bb78;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .output-content {
+            padding: 1.5rem;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.95rem;
+            background: #ffffff;
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+            white-space: pre-line;
+        }
+
+        /* Method boxes */
+        .method-box {
+            background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%);
+            border-left: 5px solid #5c6bc0;
+            padding: 2rem;
+            margin: 2.5rem 0;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(92, 107, 192, 0.1);
+        }
+
+        .method-box h4 {
+            color: #3f4771;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .method-box h4::before {
+            content: "🔧";
+            margin-right: 0.5rem;
+            font-size: 1.5rem;
+        }
+
+        /* Insight boxes */
+        .insight-box {
+            background: linear-gradient(135deg, #fef5e7 0%, #fff8e1 100%);
+            border-left: 5px solid #f6ad55;
+            padding: 2rem;
+            margin: 2.5rem 0;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(246, 173, 85, 0.1);
+        }
+
+        .insight-box h4 {
+            color: #c05621;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .insight-box h4::before {
+            content: "💡";
+            margin-right: 0.5rem;
+            font-size: 1.5rem;
+        }
+
+        /* Tip boxes */
+        .tip-box {
+            background: linear-gradient(135deg, #e6fffa 0%, #f0fff4 100%);
+            border-left: 5px solid #38b2ac;
+            padding: 2rem;
+            margin: 2.5rem 0;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(56, 178, 172, 0.1);
+        }
+
+        .tip-box strong {
+            color: #2c7a7b;
+            font-size: 1.2rem;
+        }
+
+        /* Performance boxes */
+        .performance-box {
+            background: linear-gradient(135deg, #fed7d7 0%, #fbb6ce 100%);
+            border-left: 5px solid #f56565;
+            padding: 2rem;
+            margin: 2.5rem 0;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(245, 101, 101, 0.1);
+        }
+
+        .performance-box h4 {
+            color: #c53030;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .performance-box h4::before {
+            content: "⚡";
+            margin-right: 0.5rem;
+            font-size: 1.5rem;
+        }
+
+        /* Trick boxes */
+        .trick-box {
+            background: linear-gradient(135deg, #f0fff0 0%, #e8f5e8 100%);
+            border-left: 5px solid #68d391;
+            padding: 2rem;
+            margin: 2.5rem 0;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(104, 211, 145, 0.1);
+        }
+
+        .trick-box h4 {
+            color: #2f855a;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .trick-box h4::before {
+            content: "🎯";
+            margin-right: 0.5rem;
+            font-size: 1.5rem;
+        }
+
+        /* Lists */
+        ul, ol {
+            margin: 1.5rem 0;
+            padding-left: 2rem;
+        }
+
+        li {
+            margin: 0.8rem 0;
+            font-size: 1.1rem;
+        }
+
+        /* Navigation */
+        .back-nav {
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        .back-link {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: transform 0.3s ease;
+            font-size: 1.1rem;
+        }
+
+        .back-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .blog-header {
+                padding: 2rem;
+            }
+            
+            .blog-header h1 {
+                font-size: 2.2rem;
+            }
+            
+            .blog-content {
+                padding: 2rem;
+            }
+            
+            .code-block {
+                padding: 1rem;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="blog-header">
+            <h1>My Practical Insights of Using spaCy Library</h1>
+            <div class="blog-meta">Published on June 10, 2024 | 16 min read</div>
+            <p class="blog-description">
+                A comprehensive exploration of spaCy's NLP capabilities, advanced techniques, and practical tricks for building robust text processing pipelines in production environments
+            </p>
+        </header>
+
+        <!-- Blog Content -->
+        <article class="blog-content">
+            <p>
+                SpaCy is not just another NLP library, it's a production-ready toolkit that has revolutionized how we approach natural language processing in Python. After years of building text processing systems, from sentiment analysis pipelines to entity extraction services, I've discovered that spaCy's true power lies not just in its speed and accuracy, but in its thoughtful design and extensibility.
+            </p>
+            
+            <p>
+                This guide shares the most impactful techniques, hidden features, and optimization strategies I've learned while processing millions of documents, building custom NLP pipelines, and deploying text analysis systems in production. These insights will transform how you approach text processing challenges.
+            </p>
+
+            <h2>1. Understanding spaCy's Architecture and Core Components</h2>
+            
+            <p>
+                SpaCy's architecture is built around the concept of a processing pipeline where each component adds linguistic annotations to the text. Understanding this architecture is crucial for effective usage and customization.
+            </p>
+
+            <div class="method-box">
+                <h4>Core Pipeline Components</h4>
+                <p><strong>Tokenizer:</strong> Segments text into individual tokens (words, punctuation, etc.)</p>
+                <p><strong>Tagger:</strong> Assigns part-of-speech tags to each token</p>
+                <p><strong>Parser:</strong> Analyzes syntactic dependencies between tokens</p>
+                <p><strong>NER:</strong> Identifies and classifies named entities</p>
+                <p><strong>Lemmatizer:</strong> Reduces words to their base forms</p>
+            </div>
+
+            <div class="code-section">
+                <div class="code-header">Basic spaCy Setup and Pipeline Exploration</div>
+                <div class="code-block">import spacy
+from spacy import displacy
+import pandas as pd
+
+# Load the English model (install with: python -m spacy download en_core_web_sm)
+nlp = spacy.load("en_core_web_sm")
+
+# Examine the pipeline components
+print("Pipeline components:", nlp.pipe_names)
+print("Pipeline:", [name for name, component in nlp.pipeline])
+
+# Process a sample text
+text = "Apple Inc. is planning to open a new store in New York City next month."
+doc = nlp(text)
+
+# Explore different linguistic features
+print(f"\nOriginal text: {text}")
+print(f"Number of tokens: {len(doc)}")
+print(f"Number of sentences: {len(list(doc.sents))}")
+
+# Token-level analysis
+for token in doc:
+    print(f"{token.text:12} | {token.pos_:8} | {token.lemma_:12} | {token.is_stop}")
+</div>
+            </div>
+
+            <div class="output-section">
+                <div class="output-header">Expected Output:</div>
+                <div class="output-content">Pipeline components: ['tok2vec', 'tagger', 'parser', 'attribute_ruler', 'lemmatizer', 'ner']
+Pipeline: [('tok2vec', <spacy.pipeline.tok2vec.Tok2Vec>), ('tagger', <spacy.pipeline.tagger.Tagger>), ...]
+
+Original text: Apple Inc. is planning to open a new store in New York City next month.
+Number of tokens: 15
+Number of sentences: 1
+
+Apple        | PROPN    | Apple        | False
+Inc.         | PROPN    | Inc.         | False
+is           | AUX      | be           | True
+planning     | VERB     | plan         | False
+to           | PART     | to           | True
+open         | VERB     | open         | False
+a            | DET      | a            | True
+new          | ADJ      | new          | False
+store        | NOUN     | store        | False
+in           | ADP      | in           | True
+New          | PROPN    | New          | False
+York         | PROPN    | York         | False
+City         | PROPN    | City         | False
+next         | ADJ      | next         | False
+month        | NOUN     | month        | False</div>
+            </div>
+
+            <div class="trick-box">
+                <h4>Performance Trick: Selective Pipeline Components</h4>
+                <p>
+                    You can disable unused pipeline components to improve performance. Use <code>nlp.select_pipes()</code> to enable only what you need:
+                </p>
+                <div class="code-section">
+                    <div class="code-block"># Disable components you don't need
+nlp_fast = spacy.load("en_core_web_sm", disable=["parser", "ner"])
+
+# Or enable specific components only
+with nlp.select_pipes(enable=["tagger", "lemmatizer"]):
+    doc = nlp("This will only run tagger and lemmatizer")
+    
+print("Active components:", nlp.pipe_names)</div>
+                </div>
+            </div>
+
+            <h2>2. Advanced Text Processing and Linguistic Analysis</h2>
+            
+            <p>
+                SpaCy excels at providing detailed linguistic annotations. Understanding these features deeply allows you to build sophisticated text analysis systems.
+            </p>
+
+            <div class="code-section">
+                <div class="code-header">Deep Linguistic Analysis Techniques</div>
+                <div class="code-block"># Advanced linguistic feature extraction
+text = """
+The researchers at Stanford University published groundbreaking findings about 
+machine learning algorithms. Dr. Sarah Johnson, who led the study, explained 
+that the new approach could revolutionize natural language processing.
+"""
+
+doc = nlp(text)
+
+print("=== NAMED ENTITY RECOGNITION ===")
+for ent in doc.ents:
+    print(f"{ent.text:20} | {ent.label_:12} | {spacy.explain(ent.label_)}")
+
+print("\n=== DEPENDENCY PARSING ===")
+for token in doc:
+    if token.dep_ != "punct":  # Skip punctuation
+        print(f"{token.text:15} | {token.dep_:10} | {token.head.text}")
+
+print("\n=== SENTENCE SEGMENTATION ===")
+for i, sent in enumerate(doc.sents, 1):
+    print(f"Sentence {i}: {sent.text.strip()}")
+
+print("\n=== NOUN CHUNKS ===")
+for chunk in doc.noun_chunks:
+    print(f"{chunk.text:25} | Root: {chunk.root.text} | Dep: {chunk.root.dep_}")
+</div>
+            </div>
+
+            <div class="output-section">
+                <div class="output-header">Expected Output:</div>
+                <div class="output-content">=== NAMED ENTITY RECOGNITION ===
+Stanford University  | ORG          | Companies, agencies, institutions, etc.
+Sarah Johnson        | PERSON       | People, including fictional
+                     
+=== DEPENDENCY PARSING ===
+researchers     | nsubj      | published
+Stanford        | compound   | University
+University      | pobj       | at
+published       | ROOT       | published
+groundbreaking  | amod       | findings
+findings        | dobj       | published
+machine         | compound   | algorithms
+learning        | compound   | algorithms
+algorithms      | pobj       | about
+
+=== SENTENCE SEGMENTATION ===
+Sentence 1: The researchers at Stanford University published groundbreaking findings about machine learning algorithms.
+Sentence 2: Dr. Sarah Johnson, who led the study, explained that the new approach could revolutionize natural language processing.
+
+=== NOUN CHUNKS ===
+The researchers           | Root: researchers | Dep: nsubj
+Stanford University       | Root: University  | Dep: pobj
+groundbreaking findings   | Root: findings    | Dep: dobj
+machine learning algorithms| Root: algorithms  | Dep: pobj</div>
+            </div>
+
+            <div class="method-box">
+                <h4>Key Methods for Text Analysis</h4>
+                <ul>
+                    <li><strong>doc.ents:</strong> Access named entities with labels and spans</li>
+                    <li><strong>doc.sents:</strong> Iterate over sentences in the document</li>
+                    <li><strong>doc.noun_chunks:</strong> Extract noun phrases automatically</li>
+                    <li><strong>token.similarity():</strong> Calculate semantic similarity between tokens</li>
+                    <li><strong>doc.vector:</strong> Get document-level word embeddings</li>
+                </ul>
+            </div>
+
+            <h3>Practical Tricks for Better Text Processing</h3>
+
+            <div class="trick-box">
+                <h4>Trick 1: Custom Token Extensions</h4>
+                <p>Add custom attributes to tokens for domain-specific processing:</p>
+                <div class="code-section">
+                    <div class="code-block"># Add custom token attributes
+from spacy.tokens import Token
+
+# Check if the extension already exists
+if not Token.has_extension("is_email"):
+    Token.set_extension("is_email", getter=lambda token: "@" in token.text)
+
+if not Token.has_extension("is_currency"):
+    Token.set_extension("is_currency", getter=lambda token: token.text.startswith("$"))
+
+doc = nlp("Contact john@example.com about the $500 budget.")
+
+for token in doc:
+    if token._.is_email or token._.is_currency:
+        print(f"{token.text} - Email: {token._.is_email}, Currency: {token._.is_currency}")</div>
+                </div>
+            </div>
+
+            <div class="trick-box">
+                <h4>Trick 2: Efficient Batch Processing</h4>
+                <p>Process multiple documents efficiently using nlp.pipe():</p>
+                <div class="code-section">
+                    <div class="code-block">import time
+
+texts = [
+    "This is the first document.",
+    "Here's the second document.",
+    "And this is the third document."
+] * 100  # 300 documents
+
+# Inefficient: processing one by one
+start_time = time.time()
+docs_slow = [nlp(text) for text in texts]
+slow_time = time.time() - start_time
+
+# Efficient: batch processing
+start_time = time.time()
+docs_fast = list(nlp.pipe(texts, batch_size=50))
+fast_time = time.time() - start_time
+
+print(f"Individual processing: {slow_time:.3f}s")
+print(f"Batch processing: {fast_time:.3f}s")
+print(f"Speedup: {slow_time/fast_time:.1f}x")</div>
+                </div>
+            </div>
+
+            <h2>3. Named Entity Recognition and Custom Entity Types</h2>
+            
+            <p>
+                SpaCy's NER system is highly customizable. You can train custom entity types, create pattern-based entity rules, and combine multiple approaches for robust entity extraction.
+            </p>
+
+            <div class="code-section">
+                <div class="code-header">Advanced NER Techniques and Customization</div>
+                <div class="code-block">from spacy.matcher import Matcher
+from spacy.util import filter_spans
+
+# Initialize matcher for pattern-based entity recognition
+matcher = Matcher(nlp.vocab)
+
+# Define patterns for custom entities
+email_pattern = [{"TEXT": {"REGEX": r"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"}}]
+phone_pattern = [
+    {"TEXT": {"REGEX": r"\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}"}},
+    {"TEXT": {"REGEX": r"\+\d{1,3}[-.\s]?\d{3}[-.\s]?\d{3}[-.\s]?\d{4}"}}
+]
+product_code_pattern = [{"TEXT": {"REGEX": r"[A-Z]{2,3}-\d{3,4}"}}]
+
+# Add patterns to matcher
+matcher.add("EMAIL", [email_pattern])
+matcher.add("PHONE", [phone_pattern])
+matcher.add("PRODUCT_CODE", [product_code_pattern])
+
+text = """
+Contact Sarah at sarah.johnson@company.com or call (555) 123-4567.
+Product codes: ABC-1234, XYZ-5678. International number: +1-555-987-6543.
+"""
+
+doc = nlp(text)
+
+# Find pattern matches
+matches = matcher(doc)
+custom_entities = []
+
+for match_id, start, end in matches:
+    label = nlp.vocab.strings[match_id]
+    span = doc[start:end]
+    custom_entities.append((span.start_char, span.end_char, label))
+    print(f"Custom Entity: {span.text:25} | Label: {label}")
+
+# Combine with existing entities
+all_entities = [(ent.start_char, ent.end_char, ent.label_) for ent in doc.ents]
+all_entities.extend(custom_entities)
+
+print(f"\nFound {len(doc.ents)} standard entities and {len(custom_entities)} custom entities")
+</div>
+            </div>
+
+            <div class="output-section">
+                <div class="output-header">Expected Output:</div>
+                <div class="output-content">Custom Entity: sarah.johnson@company.com | Label: EMAIL
+Custom Entity: (555) 123-4567           | Label: PHONE
+Custom Entity: ABC-1234                 | Label: PRODUCT_CODE
+Custom Entity: XYZ-5678                 | Label: PRODUCT_CODE
+Custom Entity: +1-555-987-6543          | Label: PHONE
+
+Found 1 standard entities and 5 custom entities</div>
+            </div>
+
+            <div class="method-box">
+                <h4>Entity Recognition Methods</h4>
+                <ul>
+                    <li><strong>Matcher:</strong> Pattern-based entity recognition using token patterns</li>
+                    <li><strong>PhraseMatcher:</strong> Efficient matching of large phrase lists</li>
+                    <li><strong>EntityRuler:</strong> Combine patterns with existing NER models</li>
+                    <li><strong>Custom NER:</strong> Train models on labeled data for domain-specific entities</li>
+                </ul>
+            </div>
+
+            <div class="trick-box">
+                <h4>Trick 3: EntityRuler for Flexible Entity Recognition</h4>
+                <p>Use EntityRuler to add pattern-based entities that integrate with the NER pipeline:</p>
+                <div class="code-section">
+                    <div class="code-block">from spacy.pipeline import EntityRuler
+
+# Create EntityRuler and add to pipeline
+ruler = nlp.add_pipe("entity_ruler", before="ner")
+
+# Define patterns
+patterns = [
+    {"label": "SKILL", "pattern": "machine learning"},
+    {"label": "SKILL", "pattern": "deep learning"},
+    {"label": "SKILL", "pattern": "natural language processing"},
+    {"label": "COMPANY", "pattern": [{"LOWER": "google"}, {"LOWER": "llc"}]},
+]
+
+ruler.add_patterns(patterns)
+
+text = "I have experience in machine learning and deep learning at Google LLC."
+doc = nlp(text)
+
+for ent in doc.ents:
+    print(f"{ent.text:25} | {ent.label_}")</div>
+                </div>
+            </div>
+
+            <h2>4. Text Preprocessing and Normalization Strategies</h2>
+            
+            <p>
+                Effective text preprocessing is crucial for downstream NLP tasks. SpaCy provides powerful tools for cleaning, normalizing, and preparing text data for analysis or machine learning.
+            </p>
+
+            <div class="code-section">
+                <div class="code-header">Comprehensive Text Preprocessing Pipeline</div>
+                <div class="code-block"># Advanced text preprocessing utilities
+import re
+import unicodedata
+
+def advanced_text_cleaner(text, remove_entities=None, min_token_length=2):
+    """
+    Advanced text cleaning and normalization pipeline
+    """
+    # Process with spaCy
+    doc = nlp(text)
+    
+    cleaned_tokens = []
+    
+    for token in doc:
+        # Skip unwanted tokens
+        if (token.is_stop or 
+            token.is_punct or 
+            token.is_space or 
+            token.like_num or
+            len(token.text) < min_token_length):
+            continue
+            
+        # Skip specific entity types if requested
+        if remove_entities and token.ent_type_ in remove_entities:
+            continue
+            
+        # Use lemmatized form
+        cleaned_token = token.lemma_.lower().strip()
+        
+        # Additional cleaning
+        if cleaned_token and cleaned_token.isalpha():
+            cleaned_tokens.append(cleaned_token)
+    
+    return cleaned_tokens
+
+# Test the preprocessing pipeline
+sample_texts = [
+    "The CEO of Apple Inc., Tim Cook, announced $50 billion in revenue for Q3 2023!",
+    "Dr. Sarah Johnson (PhD) published 15 papers on NLP algorithms @ Stanford University.",
+    "Visit https://example.com or email info@company.com for more details."
+]
+
+print("=== TEXT PREPROCESSING RESULTS ===")
+for i, text in enumerate(sample_texts, 1):
+    print(f"\nOriginal {i}: {text}")
+    
+    # Basic preprocessing
+    basic_tokens = advanced_text_cleaner(text)
+    print(f"Basic: {' '.join(basic_tokens)}")
+    
+    # Remove person and organization entities
+    no_entities = advanced_text_cleaner(text, remove_entities=['PERSON', 'ORG'])
+    print(f"No Entities: {' '.join(no_entities)}")
+
+# Advanced preprocessing utilities
+def extract_text_statistics(text):
+    """Extract comprehensive text statistics"""
+    doc = nlp(text)
+    
+    stats = {
+        'total_tokens': len(doc),
+        'unique_tokens': len(set([token.text.lower() for token in doc])),
+        'sentences': len(list(doc.sents)),
+        'entities': len(doc.ents),
+        'noun_chunks': len(list(doc.noun_chunks)),
+        'stop_words': sum(1 for token in doc if token.is_stop),
+        'pos_distribution': {}
+    }
+    
+    # POS distribution
+    for token in doc:
+        pos = token.pos_
+        stats['pos_distribution'][pos] = stats['pos_distribution'].get(pos, 0) + 1
+    
+    return stats
+
+# Demonstrate text statistics
+long_text = """
+Natural language processing (NLP) is a subfield of linguistics, computer science, 
+and artificial intelligence concerned with the interactions between computers and 
+human language. It involves developing algorithms and models that can understand, 
+interpret, and generate human language in a valuable way.
+"""
+
+stats = extract_text_statistics(long_text)
+print(f"\n=== TEXT STATISTICS ===")
+for key, value in stats.items():
+    if key != 'pos_distribution':
+        print(f"{key}: {value}")
+
+print(f"\nTop POS tags:")
+sorted_pos = sorted(stats['pos_distribution'].items(), key=lambda x: x[1], reverse=True)
+for pos, count in sorted_pos[:5]:
+    print(f"  {pos}: {count}")
+</div>
+            </div>
+
+            <div class="output-section">
+                <div class="output-header">Expected Output:</div>
+                <div class="output-content">=== TEXT PREPROCESSING RESULTS ===
+
+Original 1: The CEO of Apple Inc., Tim Cook, announced $50 billion in revenue for Q3 2023!
+Basic: ceo apple inc tim cook announce billion revenue
+No Entities: ceo announce billion revenue
+
+Original 2: Dr. Sarah Johnson (PhD) published 15 papers on NLP algorithms @ Stanford University.
+Basic: dr sarah johnson phd publish paper nlp algorithm stanford university
+No Entities: dr phd publish paper nlp algorithm
+
+Original 3: Visit https://example.com or email info@company.com for more details.
+Basic: visit http example com email info company com detail
+No Entities: visit http example com email info company com detail
+
+=== TEXT STATISTICS ===
+total_tokens: 45
+unique_tokens: 35
+sentences: 2
+entities: 0
+noun_chunks: 10
+stop_words: 12
+
+Top POS tags:
+  NOUN: 12
+  ADP: 6
+  PUNCT: 4
+  ADJ: 4
+  VERB: 3</div>
+            </div>
+
+            <div class="performance-box">
+                <h4>Performance Optimization for Large Text Corpora</h4>
+                <p>
+                    When processing large amounts of text, consider these optimization strategies:
+                </p>
+                <ul>
+                    <li>Use <code>nlp.pipe()</code> with appropriate batch sizes (50-1000 texts)</li>
+                    <li>Disable unnecessary pipeline components using <code>disable</code> parameter</li>
+                    <li>Use smaller models (sm vs md vs lg) when high accuracy isn't critical</li>
+                    <li>Implement text chunking for very long documents</li>
+                </ul>
+            </div>
+
+            <h2>5. Advanced Pipeline Customization and Extension</h2>
+            
+            <p>
+                SpaCy's extensibility is one of its greatest strengths. You can add custom pipeline components, modify existing ones, and create specialized processing workflows for your specific needs.
+            </p>
+
+            <div class="code-section">
+                <div class="code-header">Custom Pipeline Components and Extensions</div>
+                <div class="code-block">from spacy.language import Language
+from spacy.tokens import Doc, Span
+
+# Custom pipeline component for sentiment analysis
+@Language.component("sentiment_analyzer")
+def sentiment_component(doc):
+    """Simple rule-based sentiment analysis component"""
+    
+    positive_words = {"good", "great", "excellent", "amazing", "wonderful", "fantastic"}
+    negative_words = {"bad", "terrible", "awful", "horrible", "disappointing", "poor"}
+    
+    positive_count = sum(1 for token in doc if token.lemma_.lower() in positive_words)
+    negative_count = sum(1 for token in doc if token.lemma_.lower() in negative_words)
+    
+    # Calculate sentiment score
+    total_sentiment_words = positive_count + negative_count
+    if total_sentiment_words > 0:
+        sentiment_score = (positive_count - negative_count) / total_sentiment_words
+    else:
+        sentiment_score = 0.0
+    
+    # Add sentiment to doc extensions
+    doc._.sentiment_score = sentiment_score
+    doc._.sentiment_label = "positive" if sentiment_score > 0.1 else "negative" if sentiment_score < -0.1 else "neutral"
+    
+    return doc
+
+# Custom component for text complexity analysis
+@Language.component("complexity_analyzer")
+def complexity_component(doc):
+    """Analyze text complexity metrics"""
+    
+    total_tokens = len(doc)
+    total_sentences = len(list(doc.sents))
+    
+    # Calculate average sentence length
+    avg_sentence_length = total_tokens / total_sentences if total_sentences > 0 else 0
+    
+    # Count complex words (words with more than 2 syllables - simplified)
+    complex_words = sum(1 for token in doc if len(token.text) > 7 and token.is_alpha)
+    
+    # Calculate readability scores
+    doc._.avg_sentence_length = avg_sentence_length
+    doc._.complex_word_ratio = complex_words / total_tokens if total_tokens > 0 else 0
+    doc._.readability_score = max(0, 100 - (avg_sentence_length * 1.5) - (doc._.complex_word_ratio * 100))
+    
+    return doc
+
+# Register document extensions
+if not Doc.has_extension("sentiment_score"):
+    Doc.set_extension("sentiment_score", default=0.0)
+if not Doc.has_extension("sentiment_label"):
+    Doc.set_extension("sentiment_label", default="neutral")
+if not Doc.has_extension("avg_sentence_length"):
+    Doc.set_extension("avg_sentence_length", default=0.0)
+if not Doc.has_extension("complex_word_ratio"):
+    Doc.set_extension("complex_word_ratio", default=0.0)
+if not Doc.has_extension("readability_score"):
+    Doc.set_extension("readability_score", default=0.0)
+
+# Create a new pipeline with custom components
+nlp_custom = spacy.load("en_core_web_sm")
+nlp_custom.add_pipe("sentiment_analyzer", last=True)
+nlp_custom.add_pipe("complexity_analyzer", last=True)
+
+# Test the custom pipeline
+test_texts = [
+    "This is an amazing product! The quality is excellent and the design is wonderful.",
+    "The service was terrible. I had a horrible experience and would not recommend it.",
+    "The comprehensive analysis demonstrates significant improvements in computational efficiency through advanced algorithmic optimizations.",
+    "I like cats."
+]
+
+print("=== CUSTOM PIPELINE ANALYSIS ===")
+for i, text in enumerate(test_texts, 1):
+    doc = nlp_custom(text)
+    
+    print(f"\nText {i}: {text}")
+    print(f"Sentiment: {doc._.sentiment_label} (score: {doc._.sentiment_score:.2f})")
+    print(f"Avg sentence length: {doc._.avg_sentence_length:.1f}")
+    print(f"Complex word ratio: {doc._.complex_word_ratio:.2f}")
+    print(f"Readability score: {doc._.readability_score:.1f}")
+</div>
+            </div>
+
+            <div class="output-section">
+                <div class="output-header">Expected Output:</div>
+                <div class="output-content">=== CUSTOM PIPELINE ANALYSIS ===
+
+Text 1: This is an amazing product! The quality is excellent and the design is wonderful.
+Sentiment: positive (score: 1.00)
+Avg sentence length: 13.0
+Complex word ratio: 0.15
+Readability score: 65.5
+
+Text 2: The service was terrible. I had a horrible experience and would not recommend it.
+Sentiment: negative (score: -1.00)
+Avg sentence length: 13.0
+Complex word ratio: 0.15
+Readability score: 65.5
+
+Text 3: The comprehensive analysis demonstrates significant improvements in computational efficiency through advanced algorithmic optimizations.
+Sentiment: neutral (score: 0.00)
+Avg sentence length: 13.0
+Complex word ratio: 0.69
+Readability score: 11.0
+
+Text 4: I like cats.
+Sentiment: neutral (score: 0.00)
+Avg sentence length: 3.0
+Complex word ratio: 0.00
+Readability score: 95.5</div>
+            </div>
+
+            <div class="trick-box">
+                <h4>Trick 4: Dynamic Pipeline Modification</h4>
+                <p>Modify pipeline components at runtime based on your needs:</p>
+                <div class="code-section">
+                    <div class="code-block"># Save and restore pipeline configurations
+original_pipeline = nlp.pipe_names.copy()
+
+# Temporarily modify pipeline
+nlp.remove_pipe("ner")  # Remove NER for faster processing
+nlp.add_pipe("sentiment_analyzer")  # Add custom component
+
+# Process text with modified pipeline
+doc = nlp("This is a test document.")
+
+# Restore original pipeline
+for component in original_pipeline:
+    if component not in nlp.pipe_names:
+        nlp.add_pipe(component)
+
+print(f"Current pipeline: {nlp.pipe_names}")</div>
+                </div>
+            </div>
+
+            <h2>6. Real-World Applications and Production Tips</h2>
+            
+            <p>
+                Building production-ready NLP systems requires understanding performance optimization, error handling, and scalability patterns. Here are the most important techniques I've learned from deploying spaCy in production.
+            </p>
+
+            <div class="code-section">
+                <div class="code-header">Production-Ready Text Processing System</div>
+                <div class="code-block">import logging
+from typing import List, Dict, Optional
+from dataclasses import dataclass
+import json
+
+# Configure logging for production
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+@dataclass
+class ProcessingResult:
+    """Structured result for text processing"""
+    text: str
+    tokens: List[str]
+    entities: List[Dict]
+    sentiment: Optional[str] = None
+    language: Optional[str] = None
+    processing_time: Optional[float] = None
+
+class ProductionNLPProcessor:
+    """Production-ready NLP processor with error handling and monitoring"""
+    
+    def __init__(self, model_name: str = "en_core_web_sm", enable_custom_components: bool = True):
+        try:
+            self.nlp = spacy.load(model_name)
+            
+            if enable_custom_components:
+                # Add custom components if needed
+                if "sentiment_analyzer" not in self.nlp.pipe_names:
+                    self.nlp.add_pipe("sentiment_analyzer", last=True)
+                    
+            logger.info(f"NLP processor initialized with model: {model_name}")
+            logger.info(f"Pipeline components: {self.nlp.pipe_names}")
+            
+        except OSError as e:
+            logger.error(f"Failed to load model {model_name}: {e}")
+            raise
+    
+    def process_text(self, text: str) -> ProcessingResult:
+        """Process single text with error handling"""
+        if not text or not text.strip():
+            return ProcessingResult(text="", tokens=[], entities=[], sentiment="neutral")
+        
+        try:
+            import time
+            start_time = time.time()
+            
+            # Process with spaCy
+            doc = self.nlp(text.strip())
+            
+            # Extract information
+            tokens = [token.lemma_.lower() for token in doc if not token.is_stop and not token.is_punct]
+            
+            entities = [
+                {
+                    "text": ent.text,
+                    "label": ent.label_,
+                    "start": ent.start_char,
+                    "end": ent.end_char,
+                    "description": spacy.explain(ent.label_)
+                }
+                for ent in doc.ents
+            ]
+            
+            # Get sentiment if available
+            sentiment = getattr(doc._, "sentiment_label", "neutral")
+            
+            processing_time = time.time() - start_time
+            
+            return ProcessingResult(
+                text=text,
+                tokens=tokens,
+                entities=entities,
+                sentiment=sentiment,
+                language=doc.lang_,
+                processing_time=processing_time
+            )
+            
+        except Exception as e:
+            logger.error(f"Error processing text: {e}")
+            return ProcessingResult(text=text, tokens=[], entities=[], sentiment="error")
+    
+    def process_batch(self, texts: List[str], batch_size: int = 50) -> List[ProcessingResult]:
+        """Process multiple texts efficiently"""
+        results = []
+        
+        try:
+            # Use spaCy's pipe for efficient batch processing
+            docs = list(self.nlp.pipe(texts, batch_size=batch_size))
+            
+            for text, doc in zip(texts, docs):
+                tokens = [token.lemma_.lower() for token in doc if not token.is_stop and not token.is_punct]
+                
+                entities = [
+                    {
+                        "text": ent.text,
+                        "label": ent.label_,
+                        "start": ent.start_char,
+                        "end": ent.end_char
+                    }
+                    for ent in doc.ents
+                ]
+                
+                sentiment = getattr(doc._, "sentiment_label", "neutral")
+                
+                results.append(ProcessingResult(
+                    text=text,
+                    tokens=tokens,
+                    entities=entities,
+                    sentiment=sentiment,
+                    language=doc.lang_
+                ))
+                
+        except Exception as e:
+            logger.error(f"Error in batch processing: {e}")
+            # Return error results for all texts
+            results = [ProcessingResult(text=text, tokens=[], entities=[], sentiment="error") 
+                      for text in texts]
+        
+        return results
+
+# Demonstrate production processor
+processor = ProductionNLPProcessor()
+
+# Single text processing
+sample_text = "Apple Inc. is planning to release an amazing new iPhone model next year."
+result = processor.process_text(sample_text)
+
+print("=== SINGLE TEXT PROCESSING ===")
+print(f"Original: {result.text}")
+print(f"Key tokens: {result.tokens[:10]}")  # First 10 tokens
+print(f"Entities found: {len(result.entities)}")
+for ent in result.entities:
+    print(f"  - {ent['text']}: {ent['label']}")
+print(f"Sentiment: {result.sentiment}")
+print(f"Processing time: {result.processing_time:.3f}s")
+
+# Batch processing demonstration
+batch_texts = [
+    "Google announced new AI capabilities.",
+    "Microsoft released updates to their cloud platform.",
+    "Amazon's stock price increased significantly.",
+    "Tesla revealed their latest electric vehicle innovations."
+]
+
+batch_results = processor.process_batch(batch_texts)
+
+print(f"\n=== BATCH PROCESSING ===")
+print(f"Processed {len(batch_results)} texts")
+for i, result in enumerate(batch_results, 1):
+    print(f"{i}. Entities: {len(result.entities)}, Sentiment: {result.sentiment}")
+</div>
+            </div>
+
+            <div class="output-section">
+                <div class="output-header">Expected Output:</div>
+                <div class="output-content">=== SINGLE TEXT PROCESSING ===
+Original: Apple Inc. is planning to release an amazing new iPhone model next year.
+Key tokens: ['apple', 'inc', 'plan', 'release', 'amazing', 'new', 'iphone', 'model', 'next', 'year']
+Entities found: 2
+  - Apple Inc.: ORG
+  - iPhone: PRODUCT
+Sentiment: positive
+Processing time: 0.012s
+
+=== BATCH PROCESSING ===
+Processed 4 texts
+1. Entities: 1, Sentiment: neutral
+2. Entities: 1, Sentiment: neutral
+3. Entities: 1, Sentiment: positive
+4. Entities: 1, Sentiment: neutral</div>
+            </div>
+
+            <div class="performance-box">
+                <h4>Production Performance Tips</h4>
+                <ul>
+                    <li><strong>Model Selection:</strong> Use 'sm' models for speed, 'lg' for accuracy in production</li>
+                    <li><strong>Memory Management:</strong> Process texts in batches to manage memory usage</li>
+                    <li><strong>Caching:</strong> Cache processed results for frequently analyzed texts</li>
+                    <li><strong>Error Handling:</strong> Always implement robust error handling for malformed input</li>
+                    <li><strong>Monitoring:</strong> Log processing times and error rates for monitoring</li>
+                </ul>
+            </div>
+
+            <h2>7. Essential spaCy Tricks and Lesser-Known Features</h2>
+            
+            <p>
+                After years of working with spaCy, I've discovered many hidden gems and lesser-known features that can significantly improve your NLP workflows. Here are the most valuable ones.
+            </p>
+
+            <div class="trick-box">
+                <h4>Trick 5: Document Similarity and Vector Operations</h4>
+                <p>Use spaCy's built-in word vectors for semantic similarity:</p>
+                <div class="code-section">
+                    <div class="code-block"># Load a model with vectors (requires en_core_web_md or en_core_web_lg)
+# nlp_vectors = spacy.load("en_core_web_md")
+
+# For demonstration with small model, we'll show the concept
+doc1 = nlp("I love programming in Python")
+doc2 = nlp("I enjoy coding with Python")
+doc3 = nlp("The weather is nice today")
+
+# Note: Similarity requires vectors, which sm model doesn't have
+# With vector models, you can do:
+# similarity = doc1.similarity(doc2)
+# print(f"Similarity between doc1 and doc2: {similarity:.3f}")
+
+# Alternative: Use token-level analysis
+def simple_text_similarity(text1, text2):
+    """Simple token-based similarity"""
+    doc1 = nlp(text1)
+    doc2 = nlp(text2)
+    
+    tokens1 = set(token.lemma_.lower() for token in doc1 if not token.is_stop and token.is_alpha)
+    tokens2 = set(token.lemma_.lower() for token in doc2 if not token.is_stop and token.is_alpha)
+    
+    intersection = tokens1.intersection(tokens2)
+    union = tokens1.union(tokens2)
+    
+    return len(intersection) / len(union) if union else 0
+
+sim_score = simple_text_similarity("I love programming", "I enjoy coding")
+print(f"Token-based similarity: {sim_score:.3f}")</div>
+                </div>
+            </div>
+
+            <div class="trick-box">
+                <h4>Trick 6: Efficient Text Classification Pipeline</h4>
+                <p>Build a simple text classifier using spaCy features:</p>
+                <div class="code-section">
+                    <div class="code-block">def extract_text_features(text):
+    """Extract features for text classification"""
+    doc = nlp(text)
+    
+    features = {
+        'length': len(doc),
+        'num_sentences': len(list(doc.sents)),
+        'num_entities': len(doc.ents),
+        'avg_word_length': sum(len(token.text) for token in doc if token.is_alpha) / sum(1 for token in doc if token.is_alpha) if any(token.is_alpha for token in doc) else 0,
+        'exclamation_count': text.count('!'),
+        'question_count': text.count('?'),
+        'uppercase_ratio': sum(1 for char in text if char.isupper()) / len(text) if text else 0,
+        'has_person': any(ent.label_ == 'PERSON' for ent in doc.ents),
+        'has_org': any(ent.label_ == 'ORG' for ent in doc.ents),
+        'sentiment_words': sum(1 for token in doc if token.lemma_.lower() in ['good', 'bad', 'great', 'terrible'])
+    }
+    
+    return features
+
+# Test feature extraction
+sample_texts = [
+    "BREAKING NEWS: Major company announces huge profits!",
+    "Can you help me with this technical issue, please?",
+    "Apple Inc. reported strong quarterly earnings today."
+]
+
+for i, text in enumerate(sample_texts, 1):
+    features = extract_text_features(text)
+    print(f"\nText {i}: {text}")
+    print(f"Features: {features}")</div>
+                </div>
+            </div>
+
+            <div class="trick-box">
+                <h4>Trick 7: Advanced Text Cleaning with spaCy</h4>
+                <p>Use spaCy's linguistic features for intelligent text cleaning:</p>
+                <div class="code-section">
+                    <div class="code-block">def intelligent_text_cleaner(text, preserve_entities=True, remove_stopwords=True):
+    """Intelligent text cleaning using linguistic features"""
+    doc = nlp(text)
+    
+    # Track important spans to preserve
+    important_spans = []
+    if preserve_entities:
+        important_spans.extend([(ent.start, ent.end) for ent in doc.ents])
+    
+    cleaned_tokens = []
+    
+    for i, token in enumerate(doc):
+        # Check if token is part of an important span
+        in_important_span = any(start <= i < end for start, end in important_spans)
+        
+        # Keep important tokens even if they would normally be filtered
+        if in_important_span:
+            cleaned_tokens.append(token.text)
+        elif not (token.is_stop and remove_stopwords) and not token.is_punct and not token.is_space:
+            # Use lemmatized form for regular tokens
+            if token.lemma_ != '-PRON-':  # Avoid replacing pronouns with -PRON-
+                cleaned_tokens.append(token.lemma_)
+            else:
+                cleaned_tokens.append(token.text.lower())
+    
+    return ' '.join(cleaned_tokens)
+
+# Test intelligent cleaning
+messy_text = "Dr. Sarah Johnson from Google LLC said: 'The AI technology is really, really amazing!!!'"
+cleaned = intelligent_text_cleaner(messy_text)
+
+print(f"Original: {messy_text}")
+print(f"Cleaned: {cleaned}")</div>
+                </div>
+            </div>
+
+            <h2>Conclusion and Best Practices</h2>
+            
+            <p>
+                SpaCy has transformed how we approach NLP in production environments. Its combination of speed, accuracy, and extensibility makes it the ideal choice for building robust text processing systems. The key to mastering spaCy lies in understanding its pipeline architecture and leveraging its extensibility features.
+            </p>
+
+            <div class="insight-box">
+                <h4>Essential spaCy Mastery Principles</h4>
+                <ul>
+                    <li><strong>Understand the pipeline:</strong> Know what each component does and when to disable unused ones</li>
+                    <li><strong>Leverage extensions:</strong> Use custom attributes and components for domain-specific needs</li>
+                    <li><strong>Optimize for scale:</strong> Use batch processing and appropriate model sizes for production</li>
+                    <li><strong>Combine approaches:</strong> Mix rule-based and statistical methods for robust results</li>
+                    <li><strong>Monitor performance:</strong> Track processing times and accuracy in production systems</li>
+                </ul>
+            </div>
+
+            <p>
+                The techniques covered in this guide represent practical solutions to real-world NLP challenges. From basic text processing to custom pipeline development, these patterns will help you build production-ready systems that can handle the complexity and scale of modern text processing requirements.
+            </p>
+
+            <div class="tip-box">
+                <strong>Final Recommendation:</strong> Start with spaCy's pre-trained models and gradually customize the pipeline as your requirements become more specific. The library's design philosophy of "batteries included but replaceable" makes it perfect for both rapid prototyping and production deployment.
+            </div>
+        </article>
+
+        <!-- Navigation -->
+        <nav class="back-nav">
+            <a href="index.html" class="back-link">← Back to Main Page</a>
+        </nav>
+    </div>
+</body>
+</html>

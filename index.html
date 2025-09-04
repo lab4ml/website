@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ML Insights - Tools, Concepts & Algorithms</title>
+    <title>ML & Life Insights</title>
     <style>
         * {
             margin: 0;
@@ -49,21 +49,12 @@
             animation: fadeInUp 1s ease-out 0.3s both;
         }
 
-        /* Blog Section */
-        .blog-section {
-            background: white;
-            border-radius: 20px;
-            padding: 3rem;
-            margin-top: 2rem;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            animation: fadeInUp 1s ease-out 0.6s both;
-        }
-
+        /* Section Styling */
         .section-title {
             font-size: 2.5rem;
             text-align: center;
-            margin-bottom: 3rem;
-            color: #333;
+            margin: 4rem 0 3rem 0;
+            color: white;
             position: relative;
         }
 
@@ -72,12 +63,19 @@
             display: block;
             width: 100px;
             height: 4px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #ffffff 0%, #f0f8ff 100%);
             margin: 1rem auto;
             border-radius: 2px;
         }
 
-        /* Blog Cards */
+        .blog-section {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
         .blog-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
@@ -123,6 +121,41 @@
             line-height: 1.6;
         }
 
+        .blog-card:hover p {
+            color: #333;
+        }
+
+        .library-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        /* Different colors for different types */
+        .blog-card .library-icon.book {
+            background: linear-gradient(135deg, #92a8d1 0%, #034f84 100%);
+        }
+
+        .blog-card .library-icon.nlp {
+            background: linear-gradient(135deg, #ffb347 0%, #ff8c00 100%);
+        }
+
+        .blog-card .library-icon.sci {
+            background: linear-gradient(135deg, #88d8b0 0%, #056676 100%);
+        }
+
+        .blog-card .library-icon.nltk {
+            background: linear-gradient(135deg, #ff6f69 0%, #ffcc5c 100%);
+        }
+
         .blog-link {
             display: inline-block;
             padding: 0.8rem 2rem;
@@ -138,21 +171,6 @@
             transform: scale(1.05);
         }
 
-        /* Library Icons */
-        .library-icon {
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 1rem;
-            color: white;
-            font-size: 1.5rem;
-            font-weight: bold;
-        }
-
         /* Animations */
         @keyframes fadeInUp {
             from {
@@ -165,26 +183,25 @@
             }
         }
 
-        /* Responsive Design */
         @media (max-width: 768px) {
             .hero h1 {
                 font-size: 2.5rem;
             }
-            
+
             .hero-subtitle {
                 font-size: 1.1rem;
             }
-            
+
             .blog-section {
                 padding: 2rem;
-                margin-top: 1rem;
+                margin-bottom: 2rem;
             }
-            
+
             .blog-grid {
                 grid-template-columns: 1fr;
                 gap: 1.5rem;
             }
-            
+
             .container {
                 padding: 1rem;
             }
@@ -203,47 +220,117 @@
     <div class="container">
         <!-- Hero Section -->
         <section class="hero">
-            <h1>ML Insights</h1>
+            <h1>ML & Life Insights</h1>
             <p class="hero-subtitle">
-                A comprehensive exploration of computational frameworks, mathematical foundations, and algorithmic methodologies in machine learning, featuring practical implementations and theoretical analysis of essential data science tools
+                A comprehensive exploration of machine learning tools and life wisdom through books bridging technical expertise with personal growth
             </p>
         </section>
 
-        <!-- Blog Section -->
+        <!-- Tools & Libraries Section -->
+        <section class="section-title">Tools & Libraries</section>
+
         <section class="blog-section">
-            <h2 class="section-title">Research Articles</h2>
-            
             <div class="blog-grid">
-                <!-- NumPy Blog -->
+                <!-- NumPy -->
                 <div class="blog-card">
                     <div class="library-icon">np</div>
-                    <h3>My Practical Insights of Using NumPy Library</h3>
-                    <p>An in-depth analysis of NumPy's computational architecture, exploring advanced array manipulation techniques, vectorization strategies, and memory optimization patterns critical for high-performance scientific computing in machine learning workflows.</p>
+                    <h3>NumPy Insights</h3>
+                    <p>Advanced array manipulation techniques, vectorization strategies, and performance optimization patterns for high-performance scientific computing.</p>
                     <a href="numpy-insights.html" class="blog-link">Read Analysis</a>
                 </div>
 
-                <!-- Pandas Blog -->
+                <!-- Pandas -->
                 <div class="blog-card">
                     <div class="library-icon">pd</div>
-                    <h3>My Practical Insights of Using Pandas Library</h3>
-                    <p>A systematic examination of Pandas' data manipulation capabilities, investigating advanced indexing methodologies, efficient data transformation pipelines, and statistical aggregation techniques essential for robust data preprocessing frameworks.</p>
+                    <h3>Pandas Insights</h3>
+                    <p>Data manipulation mastery, efficient grouping operations, and advanced indexing techniques for robust data processing pipelines.</p>
                     <a href="pandas-insights.html" class="blog-link">Read Analysis</a>
                 </div>
 
-                <!-- Matplotlib Blog -->
+                <!-- Matplotlib -->
                 <div class="blog-card">
                     <div class="library-icon">plt</div>
-                    <h3>My Practical Insights of Using Matplotlib Library</h3>
-                    <p>A comprehensive study of Matplotlib's visualization architecture, examining advanced plotting methodologies, customization frameworks, and publication-quality figure generation techniques for effective scientific communication and data interpretation.</p>
+                    <h3>Matplotlib Insights</h3>
+                    <p>Publication-quality visualization techniques, customization strategies, and advanced plotting methods for scientific communication.</p>
                     <a href="matplotlib-insights.html" class="blog-link">Read Analysis</a>
+                </div>
+
+                <!-- spaCy -->
+                <div class="blog-card">
+                    <div class="library-icon nlp">nlp</div>
+                    <h3>spaCy Insights</h3>
+                    <p>Natural language processing pipelines, entity recognition techniques, and production-ready text analysis systems.</p>
+                    <a href="spacy-insights.html" class="blog-link">Read Analysis</a>
+                </div>
+
+                <!-- SciPy -->
+                <div class="blog-card">
+                    <div class="library-icon sci">sci</div>
+                    <h3>SciPy Insights</h3>
+                    <p>Scientific computing methods, optimization algorithms, and statistical analysis techniques for complex mathematical problems.</p>
+                    <a href="scipy-insights.html" class="blog-link">Read Analysis</a>
+                </div>
+
+                <!-- NLTK -->
+                <div class="blog-card">
+                    <div class="library-icon nltk">nltk</div>
+                    <h3>NLTK Insights</h3>
+                    <p>Text processing fundamentals, lexical analysis approaches, and classical NLP techniques for linguistic research.</p>
+                    <a href="nltk-insights.html" class="blog-link">Read Analysis</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Book Reviews Section -->
+        <section class="section-title">Book Reviews & Life Wisdom</section>
+
+        <section class="blog-section">
+            <div class="blog-grid">
+                <!-- Atomic Habits -->
+                <div class="blog-card">
+                    <div class="library-icon book">AH</div>
+                    <h3>Atomic Habits Review</h3>
+                    <p>An insightful exploration of habit formation, behavioral change principles, and the compound effect of small daily improvements.</p>
+                    <a href="atomic-habits-review.html" class="blog-link">Read Review</a>
+                </div>
+
+                <!-- Deep Work -->
+                <div class="blog-card">
+                    <div class="library-icon book">DW</div>
+                    <h3>Deep Work Review</h3>
+                    <p>A thoughtful analysis of focus strategies, productivity techniques, and methods for achieving meaningful work in a distracted world.</p>
+                    <a href="deep-work-review.html" class="blog-link">Read Review</a>
+                </div>
+
+                <!-- Ikigai -->
+                <div class="blog-card">
+                    <div class="library-icon book">IK</div>
+                    <h3>Ikigai Review</h3>
+                    <p>A reflective examination of purpose, happiness, and the Japanese philosophy of finding meaning in life and work.</p>
+                    <a href="ikigai-review.html" class="blog-link">Read Review</a>
+                </div>
+
+                <!-- The Power of Now -->
+                <div class="blog-card">
+                    <div class="library-icon book">PN</div>
+                    <h3>The Power of Now Review</h3>
+                    <p>An exploration of mindfulness practices, present-moment awareness, and spiritual transformation through conscious living.</p>
+                    <a href="power-of-now-review.html" class="blog-link">Read Review</a>
+                </div>
+
+                <!-- The Art of War -->
+                <div class="blog-card">
+                    <div class="library-icon book">AW</div>
+                    <h3>The Art of War Review</h3>
+                    <p>A strategic analysis of Sun Tzu's timeless principles on leadership, decision-making, and competitive strategy in modern contexts.</p>
+                    <a href="art-of-war-review.html" class="blog-link">Read Review</a>
                 </div>
             </div>
         </section>
     </div>
 
-    <!-- Footer -->
     <footer class="footer">
-        <p>&copy; 2025 ML Insights - Advanced Computational Research in Machine Learning</p>
+        <p>&copy; 2025 ML & Life Insights - Bridging Technical Excellence with Personal Growth</p>
     </footer>
 </body>
 </html>
